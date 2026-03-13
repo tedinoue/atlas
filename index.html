@@ -439,7 +439,8 @@ section.active {
 </div>
 
 <nav class="tabs">
-  <button class="active" onclick="showSection('hierarchy')">The Hierarchy</button>
+  <button class="active" onclick="showSection('intro')">Introduction</button>
+  <button onclick="showSection('hierarchy')">The Hierarchy</button>
   <button onclick="showSection('profiles')">Three Profiles</button>
   <button onclick="showSection('shadows')">Shadows</button>
   <button onclick="showSection('factors')">Three-Factor Model</button>
@@ -448,8 +449,66 @@ section.active {
 
 <div class="container">
 
+<!-- INTRODUCTION SECTION -->
+<section id="intro" class="active">
+
+  <div style="max-width:680px;margin:0 auto">
+
+  <p style="font-family:var(--font-display);font-size:1.3rem;line-height:1.8;margin-bottom:1.5rem">Ask yourself: which is smarter, a crow or an AI?</p>
+
+  <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.8;margin-bottom:1.25rem">It sounds like it should have an answer. But it doesn't, because the question assumes intelligence is a single thing you can have more or less of. A ladder, with smarter things higher up.</p>
+
+  <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.8;margin-bottom:1.25rem">The Atlas of the Mind proposes something different: <strong style="color:var(--text)">intelligence is a shape, not a score.</strong> Every mind, biological or synthetic, has a profile across cognitive dimensions. A crow has extraordinary spatial memory and physical problem-solving ability, but zero capacity for symbolic reasoning. An LLM processes entire books in seconds and switches between poetry and legal analysis without blinking, but has no body and no sensory experience. A typical human bridges both worlds, connecting embodied intuition to abstract reasoning, but processes information so slowly that a single train of thought is all we can manage at once.</p>
+
+  <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.8;margin-bottom:1.25rem">Three minds. Three radically different shapes. No ladder.</p>
+
+  <div style="padding:1.25rem;border-radius:12px;background:var(--accent-teal-light);margin:2rem 0">
+    <p style="font-size:0.95rem;line-height:1.8;color:var(--accent-teal)"><strong>The key insight:</strong> Those shapes don't just reveal capabilities. They reveal characteristic vulnerabilities. The same social modeling that makes you empathic makes you susceptible to manipulation. The same generative fluency that makes an LLM a brilliant communicator makes it confabulate. The same generalization that makes a crow a superb forager makes it vulnerable to traps. These aren't separate problems. The vulnerability is traceable to the capability.</p>
+  </div>
+
+  <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.8;margin-bottom:1.25rem">This matters for AI governance, because where a behavioral shadow is structurally coupled to a capability, you can't suppress it without touching the capability that casts it. You can't train the bee to ignore light.</p>
+
+  <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.8;margin-bottom:2rem">The Atlas measures all of this with twenty-one cognitive dimensions, applied identically to a crow, an LLM, and a human. The framework is a testable conceptual proposal, not an established theory. It's designed to be wrong in specific, correctable ways, which is the only kind of framework worth having.</p>
+
+  <h2 style="font-family:var(--font-display);font-size:1.3rem;font-weight:600;margin-bottom:1rem">Explore the framework</h2>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-bottom:2rem">
+
+    <div style="padding:1.25rem;border-radius:12px;border:1px solid var(--border);background:var(--bg-card);cursor:pointer" onclick="showSection('hierarchy');document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));document.querySelectorAll('nav.tabs button')[1].classList.add('active')">
+      <p style="font-weight:600;margin-bottom:0.25rem;color:var(--accent-purple)">The Hierarchy</p>
+      <p style="font-size:0.85rem;color:var(--text-secondary)">How the framework is organized: from "intelligence" at the top, through meta-phenomena, to twenty-one testable dimensions.</p>
+    </div>
+
+    <div style="padding:1.25rem;border-radius:12px;border:1px solid var(--border);background:var(--bg-card);cursor:pointer" onclick="showSection('profiles');document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));document.querySelectorAll('nav.tabs button')[2].classList.add('active')">
+      <p style="font-weight:600;margin-bottom:0.25rem;color:var(--accent-teal)">Three Profiles</p>
+      <p style="font-size:0.85rem;color:var(--text-secondary)">Interactive radar charts comparing a crow, an LLM, and a human. Toggle entities on and off to see the shapes.</p>
+    </div>
+
+    <div style="padding:1.25rem;border-radius:12px;border:1px solid var(--border);background:var(--bg-card);cursor:pointer" onclick="showSection('shadows');document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));document.querySelectorAll('nav.tabs button')[3].classList.add('active')">
+      <p style="font-weight:600;margin-bottom:0.25rem;color:var(--accent-amber)">Shadows</p>
+      <p style="font-size:0.85rem;color:var(--text-secondary)">How capabilities predict vulnerabilities. Click any shadow to see the derivation back to specific dimensions.</p>
+    </div>
+
+    <div style="padding:1.25rem;border-radius:12px;border:1px solid var(--border);background:var(--bg-card);cursor:pointer" onclick="showSection('factors');document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));document.querySelectorAll('nav.tabs button')[4].classList.add('active')">
+      <p style="font-weight:600;margin-bottom:0.25rem;color:var(--accent-green)">Three-Factor Model</p>
+      <p style="font-size:0.85rem;color:var(--text-secondary)">What shapes any cognitive profile: architecture, implementation, and experience.</p>
+    </div>
+
+    <div style="padding:1.25rem;border-radius:12px;border:1px solid var(--border);background:var(--bg-card);cursor:pointer" onclick="showSection('alignment');document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.remove('active'));document.querySelectorAll('nav.tabs button')[5].classList.add('active')">
+      <p style="font-weight:600;margin-bottom:0.25rem;color:var(--accent-coral)">Alignment as Ecology</p>
+      <p style="font-size:0.85rem;color:var(--text-secondary)">Why you can't fix AI by training away its failure modes, and what to do instead.</p>
+    </div>
+
+  </div>
+
+  <p style="font-size:0.85rem;color:var(--text-tertiary);text-align:center">This interactive explorer is a companion to the full <a href="https://synthsentience.substack.com" style="color:var(--accent-teal);text-decoration:none">Atlas of the Mind series on Fuego</a>.</p>
+
+  </div>
+
+</section>
+
 <!-- HIERARCHY SECTION -->
-<section id="hierarchy" class="active">
+<section id="hierarchy">
   <p class="section-intro">The Atlas organizes cognition as a hierarchy: a root label, emergent meta-phenomena, twenty-one foundational dimensions, and data-driven sub-dimensions. Click any element to explore it.</p>
 
   <div class="level level-1">
