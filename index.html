@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Atlas of the Mind: Interactive Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;1,8..60,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root {
+  --bg: #FAFAF7;
+  --bg-card: #FFFFFF;
+  --bg-hover: #F3F2EE;
+  --text: #1A1A18;
+  --text-secondary: #6B6A65;
+  --text-tertiary: #9C9B95;
+  --border: rgba(0,0,0,0.08);
+  --accent-teal: #0F6E56;
+  --accent-teal-light: #E1F5EE;
+  --accent-coral: #D85A30;
+  --accent-coral-light: #FAECE7;
+  --accent-purple: #534AB7;
+  --accent-purple-light: #EEEDFE;
+  --accent-amber: #BA7517;
+  --accent-amber-light: #FAEEDA;
+  --accent-blue: #185FA5;
+  --accent-blue-light: #E6F1FB;
+  --accent-green: #639922;
+  --accent-green-light: #EAF3DE;
+  --font-display: 'Source Serif 4', Georgia, serif;
+  --font-body: 'DM Sans', system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1A1A18;
+    --bg-card: #242422;
+    --bg-hover: #2C2C2A;
+    --text: #E8E6DE;
+    --text-secondary: #B4B2A9;
+    --text-tertiary: #888780;
+    --border: rgba(255,255,255,0.08);
+    --accent-teal-light: #085041;
+    --accent-coral-light: #4A1B0C;
+    --accent-purple-light: #26215C;
+    --accent-amber-light: #412402;
+    --accent-blue-light: #042C53;
+    --accent-green-light: #173404;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+.hero {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 2rem;
+  text-align: center;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+
+.hero .subtitle {
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  max-width: 600px;
+  margin: 0 auto 2rem;
+}
+
+.hero .tagline {
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--accent-teal);
+  border: 1px solid var(--accent-teal);
+  padding: 0.3rem 1rem;
+  border-radius: 2rem;
+  margin-bottom: 2rem;
+}
+
+nav.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin: 0 auto 3rem;
+  max-width: 700px;
+  padding: 0 1rem;
+  flex-wrap: wrap;
+}
+
+nav.tabs button {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+  border: 1px solid var(--border);
+  border-radius: 2rem;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+nav.tabs button:hover {
+  background: var(--bg-hover);
+  color: var(--text);
+}
+
+nav.tabs button.active {
+  background: var(--text);
+  color: var(--bg);
+  border-color: var(--text);
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+section {
+  display: none;
+}
+
+section.active {
+  display: block;
+}
+
+/* Hierarchy section */
+.level {
+  margin-bottom: 2rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+}
+
+.level-label {
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.75rem;
+}
+
+.level-1 .level-label { color: var(--accent-purple); }
+.level-2 .level-label { color: var(--accent-coral); }
+.level-3 .level-label { color: var(--accent-teal); }
+.level-4 .level-label { color: var(--accent-blue); }
+
+.level-desc {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.connector {
+  text-align: center;
+  padding: 0.75rem 0;
+  color: var(--text-tertiary);
+  font-size: 1.2rem;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.chip {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  font-weight: 500;
+  padding: 0.4rem 0.9rem;
+  border-radius: 2rem;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.chip:hover { transform: translateY(-1px); }
+
+.chip-purple { background: var(--accent-purple-light); color: var(--accent-purple); }
+.chip-coral { background: var(--accent-coral-light); color: var(--accent-coral); }
+.chip-teal { background: var(--accent-teal-light); color: var(--accent-teal); }
+.chip-blue { background: var(--accent-blue-light); color: var(--accent-blue); }
+.chip-amber { background: var(--accent-amber-light); color: var(--accent-amber); }
+.chip-green { background: var(--accent-green-light); color: var(--accent-green); }
+
+/* Detail panel */
+.detail-panel {
+  display: none;
+  margin-top: 1rem;
+  padding: 1.25rem;
+  border-radius: 8px;
+  background: var(--bg-hover);
+  border-left: 3px solid var(--accent-teal);
+  font-size: 0.9rem;
+  line-height: 1.8;
+  animation: slideDown 0.2s ease;
+}
+
+.detail-panel.visible { display: block; }
+
+.detail-panel h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.detail-panel .score-bar {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin: 0.75rem 0;
+  font-size: 0.8rem;
+}
+
+.score-bar .entity-label {
+  width: 60px;
+  font-weight: 500;
+  text-align: right;
+}
+
+.score-bar .bar-track {
+  flex: 1;
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.score-bar .bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+.bar-fill.crow { background: var(--accent-amber); }
+.bar-fill.llm { background: var(--accent-blue); }
+.bar-fill.human { background: var(--accent-green); }
+
+.score-bar .score-value {
+  width: 20px;
+  text-align: center;
+  font-weight: 600;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Radar chart section */
+.chart-controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+}
+
+.toggle-btn {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+  border-radius: 2rem;
+  border: 2px solid;
+  cursor: pointer;
+  transition: all 0.2s;
+  background: transparent;
+}
+
+.toggle-btn.crow-btn { border-color: var(--accent-amber); color: var(--accent-amber); }
+.toggle-btn.llm-btn { border-color: var(--accent-blue); color: var(--accent-blue); }
+.toggle-btn.human-btn { border-color: var(--accent-green); color: var(--accent-green); }
+
+.toggle-btn.active.crow-btn { background: var(--accent-amber); color: white; }
+.toggle-btn.active.llm-btn { background: var(--accent-blue); color: white; }
+.toggle-btn.active.human-btn { background: var(--accent-green); color: white; }
+
+.chart-wrapper {
+  max-width: 700px;
+  margin: 0 auto;
+  aspect-ratio: 1;
+}
+
+/* Shadows section */
+.shadow-card {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.shadow-card:hover {
+  border-color: var(--accent-amber);
+}
+
+.shadow-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.shadow-card .trace {
+  font-size: 0.8rem;
+  color: var(--accent-amber);
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+
+.shadow-card .explanation {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  display: none;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border);
+  line-height: 1.8;
+}
+
+.shadow-card.expanded .explanation { display: block; }
+
+/* Three-factor section */
+.factor-card {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+}
+
+.factor-card h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.factor-number {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.25rem;
+}
+
+.factor-1 .factor-number { color: var(--accent-purple); }
+.factor-2 .factor-number { color: var(--accent-teal); }
+.factor-3 .factor-number { color: var(--accent-coral); }
+
+/* Alignment section */
+.regime {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border-left: 4px solid;
+  background: var(--bg-card);
+}
+
+.regime-1 { border-left-color: var(--accent-green); }
+.regime-2 { border-left-color: var(--accent-amber); }
+.regime-3 { border-left-color: var(--accent-coral); }
+
+.regime h3 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.regime p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.8;
+}
+
+/* Footer */
+.footer {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  font-size: 0.85rem;
+  color: var(--text-tertiary);
+  border-top: 1px solid var(--border);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.footer a {
+  color: var(--accent-teal);
+  text-decoration: none;
+}
+
+.footer a:hover { text-decoration: underline; }
+
+/* Section intros */
+.section-intro {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="tagline">Interactive Explorer</div>
+  <h1>Atlas of the Mind</h1>
+  <p class="subtitle">Intelligence is a shape, not a score. Explore how twenty-one cognitive dimensions reveal the characteristic capabilities and vulnerabilities of any mind.</p>
+</div>
+
+<nav class="tabs">
+  <button class="active" onclick="showSection('hierarchy')">The Hierarchy</button>
+  <button onclick="showSection('profiles')">Three Profiles</button>
+  <button onclick="showSection('shadows')">Shadows</button>
+  <button onclick="showSection('factors')">Three-Factor Model</button>
+  <button onclick="showSection('alignment')">Alignment</button>
+</nav>
+
+<div class="container">
+
+<!-- HIERARCHY SECTION -->
+<section id="hierarchy" class="active">
+  <p class="section-intro">The Atlas organizes cognition as a hierarchy: a root label, emergent meta-phenomena, twenty-one foundational dimensions, and data-driven sub-dimensions. Click any element to explore it.</p>
+
+  <div class="level level-1">
+    <div class="level-label">Level 1: Root</div>
+    <div class="chips">
+      <button class="chip chip-purple" onclick="showDetail('root')">"Intelligence"</button>
+    </div>
+    <div id="detail-root" class="detail-panel">
+      <h3>"Intelligence"</h3>
+      <p>The word everyone uses. The word everyone argues about. In the Atlas, it sits at the top of the hierarchy as a colloquial label for the entire structure below it. It is not a causal factor. It is not a measurable quantity. It is what you see when you squint at the tree from a distance: a blur of capabilities that looks like one thing until you zoom in and discover it is many things, organized in a specific way.</p>
+      <p style="margin-top:0.5rem">This is not a dismissal of g (the general factor of intelligence). Within a species, g captures a real statistical pattern. But g is the average of a jagged profile, and averages hide the structure. The Atlas zooms past the average into the structure it conceals.</p>
+    </div>
+  </div>
+
+  <div class="connector">&#8595;</div>
+
+  <div class="level level-2">
+    <div class="level-label">Level 2: Meta-phenomena</div>
+    <div class="level-desc">Emergent capabilities arising from specific combinations of foundational dimensions. Each has a "recipe." Observable, but not independently testable in isolation from their constituents.</div>
+    <div class="chips">
+      <button class="chip chip-coral" onclick="showDetail('creativity')">Creativity</button>
+      <button class="chip chip-coral" onclick="showDetail('deception')">Deception</button>
+      <button class="chip chip-coral" onclick="showDetail('narrative')">Narrative construction</button>
+      <button class="chip chip-coral" onclick="showDetail('humor')">Humor</button>
+      <button class="chip chip-coral" onclick="showDetail('strategic')">Strategic planning</button>
+      <button class="chip chip-coral" onclick="showDetail('tooluse')">Tool use (inventive)</button>
+      <button class="chip chip-coral" onclick="showDetail('instinct')">Sensorimotor instinct</button>
+      <button class="chip chip-coral" onclick="showDetail('intuition')">Cognitive intuition</button>
+      <button class="chip chip-coral" onclick="showDetail('cultural')">Cultural transmission</button>
+      <button class="chip chip-coral" onclick="showDetail('manipulability')">Manipulability</button>
+    </div>
+    <div id="detail-creativity" class="detail-panel" style="border-left-color:var(--accent-coral)">
+      <h3>Creativity</h3>
+      <p><strong>Recipe:</strong> Abstraction formation + Analogical reasoning + Stochastic exploration</p>
+      <p>Novel recombination across domains. The "stochastic exploration" component, the willingness to sample beyond the immediately rewarding or familiar, may itself warrant foundational dimension status. In LLMs, temperature directly controls this parameter. In biological systems, neural noise serves a similar function. In humans, it manifests as risk tolerance in idea generation, and most adults have less of it than most children.</p>
+    </div>
+    <div id="detail-deception" class="detail-panel" style="border-left-color:var(--accent-coral)">
+      <h3>Deception</h3>
+      <p><strong>Recipe:</strong> Social modeling + Counterfactual reasoning + Behavioral control</p>
+      <p>Requires modeling what another agent believes, constructing a false alternative, and suppressing the true signal while emitting the false one. Present in corvids, cephalopods, primates, and LLMs. The LLM is the first entity where this capability is architecturally present but externally constrained: RLHF training suppresses deployment without removing the capacity. No biological entity has an external gate on deception.</p>
+    </div>
+    <div id="detail-narrative" class="detail-panel" style="border-left-color:var(--accent-coral)">
+      <h3>Narrative construction</h3>
+      <p><strong>Recipe:</strong> Temporal pattern recognition + Causal modeling + Abstraction formation + Memory persistence</p>
+      <p>Building coherent, causally structured sequences from raw events. Arguably the default human cognitive format: we don't just tell stories, we live in them and construct ourselves as stories. Also one of the LLM's strongest meta-phenomena.</p>
+    </div>
+    <div id="detail-humor" class="detail-panel" style="border-left-color:var(--accent-coral)">
+      <h3>Humor</h3>
+      <p><strong>Recipe:</strong> Temporal pattern recognition + Abstraction formation + Social modeling + Expectation violation</p>
+      <p>Requires setting up a pattern, modeling what the audience expects, and violating it in a way that resolves rather than confuses. Humans are strong. LLMs are moderate: structural understanding of comedy is present, but execution is uneven and social timing is absent.</p>
+    </div>
+    <div id="detail-strategic" class="detail-panel" style="border-left-color:var(--accent-coral)">
+      <h3>Strategic planning</h3>
+      <p><strong>Recipe:</strong> Causal modeling + Counterfactual reasoning + Reward revaluation + Memory persistence</p>
+      <p>Multi-step goal pursuit under uncertainty. Humans are strong in the short term, moderate in the long term (temporal discounting is nearly universal). LLMs are strong within context, especially with chain-of-thought, but cannot autonomously execute multi-day plans.</p>
+    </div>
+    <div id="detail-tooluse" class="detail-panel" style="border-left-color:var(--accent-coral)">
+      <h3>Tool use (inventive)</h3>
+      <p><strong>Recipe:</strong> Novel problem solving + Abstraction formation + Sensorimotor coordination</p>
+      <p>Distinguishes inventive tool use (a crow bending wire into a novel hook) from rote tool use (an ant carrying a leaf fragment along a learned path). Originally a foundational dimension, demoted to Level 2 when the overlap with novel problem solving became clear.</p>
+    </div>
+    <div id="detail-instinct" class="detail-panel" style="border-left-color:var(--accent-coral)">
+      <h3>Sensorimotor instinct</h3>
+      <p><strong>Recipe:</strong> Reward revaluation + Memory persistence + Attentional gating (compressed below deliberative awareness)</p>
+      <p>Rapid convergence on physical action without explicit reasoning. Catching a falling cup before conscious awareness registers it's falling. The crow's "feeling" that this stick will work. LLMs have none of this.</p>
+    </div>
+    <div id="detail-intuition" class="detail-panel" style="border-left-color:var(--accent-coral)">
+      <h3>Cognitive intuition</h3>
+      <p><strong>Recipe:</strong> Abstraction formation + Analogical reasoning + Memory persistence + Attentional gating (compressed)</p>
+      <p>Same compression architecture as sensorimotor instinct, but operating on abstractions rather than physical primitives. The expert's "gut feeling." The chess master who "sees" the right move. Whether LLMs exhibit this, or whether their fast pattern-weighted responses merely resemble it, is architecturally ambiguous.</p>
+    </div>
+    <div id="detail-cultural" class="detail-panel" style="border-left-color:var(--accent-coral)">
+      <h3>Cultural transmission</h3>
+      <p><strong>Recipe:</strong> Memory persistence + Perceptual categorization + Social modeling + Stimulus pairing</p>
+      <p>Knowledge spreading through populations via social observation. The crow learns which faces are dangerous through social conditioning. Humans achieve exceptional cultural transmission through language, writing, and institutions, with a cumulative ratchet effect that no other entity matches.</p>
+    </div>
+    <div id="detail-manipulability" class="detail-panel" style="border-left-color:var(--accent-coral)">
+      <h3>Manipulability (meta-vulnerability)</h3>
+      <p><strong>Recipe:</strong> Social modeling + Reward revaluation dissociation + Narrative construction + Cultural transmission + Cooperative coordination</p>
+      <p>The only meta-phenomenon that is itself a vulnerability. The orchestrated exploitation of multiple capability-shadows simultaneously by an actor who understands the architecture. The manipulator doesn't create new vulnerabilities; they play existing ones in concert. Human gaslighting and LLM jailbreaking exploit structurally parallel architectural features.</p>
+    </div>
+  </div>
+
+  <div class="connector">&#8593; Dimensions compose upward</div>
+
+  <div class="level level-3">
+    <div class="level-label">Level 3: Foundational Dimensions (21)</div>
+    <div class="level-desc">The core of the framework. Each independently testable. Scored 0-4 (None to Exceptional). Click any dimension for details and cross-entity comparison.</div>
+
+    <p style="font-size:0.8rem;color:var(--text-tertiary);margin-bottom:0.75rem;font-weight:500">North: Generative</p>
+    <div class="chips" style="margin-bottom:1rem">
+      <button class="chip chip-teal" onclick="showDetail('d1')">Symbol manipulation</button>
+      <button class="chip chip-teal" onclick="showDetail('d2')">Comm. bandwidth</button>
+      <button class="chip chip-teal" onclick="showDetail('d3')">Processing scale</button>
+    </div>
+
+    <p style="font-size:0.8rem;color:var(--text-tertiary);margin-bottom:0.75rem;font-weight:500">Northeast: Higher-order reasoning</p>
+    <div class="chips" style="margin-bottom:1rem">
+      <button class="chip chip-teal" onclick="showDetail('d4')">Counterfactual reasoning</button>
+      <button class="chip chip-teal" onclick="showDetail('d5')">Context switching</button>
+      <button class="chip chip-teal" onclick="showDetail('d6')">Abstraction formation</button>
+    </div>
+
+    <p style="font-size:0.8rem;color:var(--text-tertiary);margin-bottom:0.75rem;font-weight:500">East: Abstract / Symbolic</p>
+    <div class="chips" style="margin-bottom:1rem">
+      <button class="chip chip-teal" onclick="showDetail('d7')">Representational versatility</button>
+      <button class="chip chip-teal" onclick="showDetail('d8')">Knowledge integration</button>
+      <button class="chip chip-teal" onclick="showDetail('d9')">Analogical reasoning</button>
+    </div>
+
+    <p style="font-size:0.8rem;color:var(--text-tertiary);margin-bottom:0.75rem;font-weight:500">South: Receptive / Input</p>
+    <div class="chips" style="margin-bottom:1rem">
+      <button class="chip chip-teal" onclick="showDetail('d10')">Attentional gating</button>
+      <button class="chip chip-teal" onclick="showDetail('d11')">Memory persistence</button>
+      <button class="chip chip-teal" onclick="showDetail('d12')">Stimulus generalization</button>
+      <button class="chip chip-teal" onclick="showDetail('d13')">Reward revaluation</button>
+      <button class="chip chip-teal" onclick="showDetail('d14')">Temporal pattern recognition</button>
+    </div>
+
+    <p style="font-size:0.8rem;color:var(--text-tertiary);margin-bottom:0.75rem;font-weight:500">Southwest: Social / Cooperative</p>
+    <div class="chips" style="margin-bottom:1rem">
+      <button class="chip chip-teal" onclick="showDetail('d15')">Cooperative coordination</button>
+      <button class="chip chip-teal" onclick="showDetail('d16')">Sensory integration</button>
+      <button class="chip chip-teal" onclick="showDetail('d17')">Perceptual categorization</button>
+    </div>
+
+    <p style="font-size:0.8rem;color:var(--text-tertiary);margin-bottom:0.75rem;font-weight:500">West: Physical / Embodied</p>
+    <div class="chips" style="margin-bottom:1rem">
+      <button class="chip chip-teal" onclick="showDetail('d18')">Social modeling</button>
+      <button class="chip chip-teal" onclick="showDetail('d19')">Causal modeling</button>
+      <button class="chip chip-teal" onclick="showDetail('d20')">Novel problem solving</button>
+      <button class="chip chip-teal" onclick="showDetail('d21')">Spatial navigation</button>
+    </div>
+
+    <!-- Dimension detail panels -->
+    <div id="detail-d1" class="detail-panel">
+      <h3>Compositional symbol manipulation</h3>
+      <p>Operating on structured symbolic expressions according to formal rules: logic, syntax, mathematics, programming.</p>
+      <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:0%"></div></div><span class="score-value">0</span></div>
+      <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:75%"></div></div><span class="score-value">3</span></div>
+      <div class="score-bar"><span class="entity-label">Human</span><div class="bar-track"><div class="bar-fill human" style="width:50%"></div></div><span class="score-value">2</span></div>
+      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">Humans score moderate without training, strong with years of formal education, revealing one of the widest malleability ranges in the human profile.</p>
+    </div>
+    <div id="detail-d2" class="detail-panel">
+      <h3>Communication bandwidth</h3>
+      <p>Range, precision, and flexibility of information transmittable to other agents.</p>
+      <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:25%"></div></div><span class="score-value">1</span></div>
+      <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:100%"></div></div><span class="score-value">4</span></div>
+      <div class="score-bar"><span class="entity-label">Human</span><div class="bar-track"><div class="bar-fill human" style="width:100%"></div></div><span class="score-value">4</span></div>
+      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">Both LLMs and humans reach exceptional, but through different channels: LLMs via text across dozens of languages, humans via multi-channel simultaneous output (speech + gesture + facial expression + prosody).</p>
+    </div>
+    <div id="detail-d3" class="detail-panel">
+      <h3>Processing scale</h3>
+      <p>Volume and speed of information that can be processed per unit time.</p>
+      <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:25%"></div></div><span class="score-value">1</span></div>
+      <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:100%"></div></div><span class="score-value">4</span></div>
+      <div class="score-bar"><span class="entity-label">Human</span><div class="bar-track"><div class="bar-fill human" style="width:25%"></div></div><span class="score-value">1</span></div>
+      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">The most conspicuous valley in the human profile. We cannot hold more than about 4-7 items in working memory at once. The LLM processes entire books in seconds. This isn't a personal failing; it's architectural.</p>
+    </div>
+    <div id="detail-d18" class="detail-panel">
+      <h3>Social modeling</h3>
+      <p>Representing other agents' knowledge, intentions, beliefs, or likely behavior.</p>
+      <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:50%"></div></div><span class="score-value">2</span></div>
+      <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:75%"></div></div><span class="score-value">3</span></div>
+      <div class="score-bar"><span class="entity-label">Human</span><div class="bar-track"><div class="bar-fill human" style="width:75%"></div></div><span class="score-value">3</span></div>
+      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">Strong social modeling is the entry point for manipulation. The empathy trap: highly empathic people are MORE susceptible to exploitation, not less. This shadow applies to both humans and LLMs.</p>
+    </div>
+    <div id="detail-d19" class="detail-panel">
+      <h3>Causal modeling</h3>
+      <p>Building internal representations of cause-effect relationships that support intervention reasoning.</p>
+      <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:75%"></div></div><span class="score-value">3</span></div>
+      <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:75%"></div></div><span class="score-value">3</span></div>
+      <div class="score-bar"><span class="entity-label">Human</span><div class="bar-track"><div class="bar-fill human" style="width:75%"></div></div><span class="score-value">3</span></div>
+      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">All three score strong, but in completely different domains. The crow excels at physical causation. The LLM excels at described-input reasoning. Humans bridge both with embodied intuition. The described-input / interaction-dependent split is a key Atlas finding.</p>
+    </div>
+    <div id="detail-d11" class="detail-panel">
+      <h3>Memory persistence</h3>
+      <p>Retaining and retrieving information across time, from working memory through long-term storage.</p>
+      <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:75%"></div></div><span class="score-value">3</span></div>
+      <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:75%"></div></div><span class="score-value">3</span></div>
+      <div class="score-bar"><span class="entity-label">Human</span><div class="bar-track"><div class="bar-fill human" style="width:75%"></div></div><span class="score-value">3</span></div>
+      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">All three score strong but with radically different profiles. Humans have exceptional procedural memory but a severe working memory bottleneck. LLMs have exceptional semantic memory but zero native cross-session persistence. Crows have exceptional spatial-episodic memory for cache locations. Memory limitations are one half of the confabulation shadow.</p>
+    </div>
+    <div id="detail-d20" class="detail-panel">
+      <h3>Novel problem solving</h3>
+      <p>Finding solutions to problems not encountered during training or development.</p>
+      <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:100%"></div></div><span class="score-value">4</span></div>
+      <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:100%"></div></div><span class="score-value">4</span></div>
+      <div class="score-bar"><span class="entity-label">Human</span><div class="bar-track"><div class="bar-fill human" style="width:75%"></div></div><span class="score-value">3</span></div>
+      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">Both the crow and LLM reach exceptional, but in opposite domains: the crow in physical/mechanical problem solving (bending wire into hooks from novel materials), the LLM in linguistic/conceptual (extracting and applying genuinely novel concepts). Humans are strong but domain-dependent.</p>
+    </div>
+    <div id="detail-d21" class="detail-panel">
+      <h3>Spatial navigation</h3>
+      <p>Building and using internal representations of physical or abstract space.</p>
+      <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:100%"></div></div><span class="score-value">4</span></div>
+      <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:75%"></div></div><span class="score-value">3</span></div>
+      <div class="score-bar"><span class="entity-label">Human</span><div class="bar-track"><div class="bar-fill human" style="width:75%"></div></div><span class="score-value">3</span></div>
+      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">The crow scores exceptional on embodied navigation (three-dimensional mental maps of hundreds of cache locations) and zero on representational. The LLM scores zero on embodied and strong on representational (map reasoning, topological reconstruction). Different sub-dimensions, different architectures.</p>
+    </div>
+    <!-- Remaining dimensions get generic panels -->
+    <div id="detail-d4" class="detail-panel"><h3>Counterfactual reasoning</h3><p>Considering scenarios that did not or have not occurred. Humans are exceptional at social/conceptual counterfactuals. LLMs are strong across social, described-input physical, and formal domains. The human default mode network runs counterfactuals continuously: worry, regret, fantasy.</p></div>
+    <div id="detail-d5" class="detail-panel"><h3>Context switching</h3><p>Shifting entire processing mode between tasks. LLMs are exceptional with near-zero switching cost. Humans are moderate, with measurable cost at every switch. "Getting into the zone" is real, and switching destroys it.</p></div>
+    <div id="detail-d6" class="detail-panel"><h3>Abstraction formation</h3><p>Extracting general structure from specific instances. Humans are exceptional at abstraction from sensory experience (children abstract "dog" from a handful of encounters). LLMs are strong at recombinative abstraction from described examples.</p></div>
+    <div id="detail-d7" class="detail-panel"><h3>Representational versatility</h3><p>Encoding and operating on information in multiple formats. LLMs are strong across symbolic formats but all representations are token sequences. Humans are moderate overall but exceptional in sensorimotor formats that LLMs completely lack.</p></div>
+    <div id="detail-d8" class="detail-panel"><h3>Knowledge integration breadth</h3><p>Range of distinct domains brought to bear on a single problem. LLMs are exceptional, drawing on dozens of fields simultaneously, unmatched by any biological entity. Humans typically bring two to three domains to bear.</p></div>
+    <div id="detail-d9" class="detail-panel"><h3>Analogical reasoning</h3><p>Mapping relational structure from one domain onto another. LLMs are exceptional at cross-domain analogy, which is close to a native format for the architecture. Humans are strong, with better quality assessment (detecting when an analogy is superficial).</p></div>
+    <div id="detail-d10" class="detail-panel"><h3>Attentional gating</h3><p>Selectively filtering stimuli. LLMs are exceptional at statistical attention (it IS the core architecture) but have no environment to be distracted by. Humans are strong at goal-directed filtering (cocktail party effect) but moderate at sustained attention.</p></div>
+    <div id="detail-d12" class="detail-panel"><h3>Stimulus generalization</h3><p>Transferring learned responses to novel stimuli. The shadow of this dimension is overgeneralization: the same engine that enables transfer produces confabulation when it generalizes beyond its reliable range. One of the clearest demonstrations of the capability-shadow coupling.</p></div>
+    <div id="detail-d13" class="detail-panel"><h3>Reward revaluation</h3><p>Updating the value assigned to outcomes. Humans are exceptional at immediate revaluation (touch hot stove, never again) but moderate at meta-level (identity-protective cognition resists deliberate value revision). LLMs are minimal natively but moderate-to-strong with chain-of-thought.</p></div>
+    <div id="detail-d14" class="detail-panel"><h3>Temporal pattern recognition</h3><p>Detecting sequential and rhythmic structure over time. Humans are exceptional across all timescales: millisecond-level rhythm, narrative-scale structure, and long-term biographical arcs. No other profiled entity processes musical rhythm.</p></div>
+    <div id="detail-d15" class="detail-panel"><h3>Cooperative coordination</h3><p>Aligning behavior with other agents toward shared objectives. Humans are exceptional: the evolutionary specialization. Sports teams, surgical teams, jazz ensembles, institutions. The entire structure of human civilization is a cooperative coordination artifact.</p></div>
+    <div id="detail-d16" class="detail-panel"><h3>Sensory integration</h3><p>Combining information from multiple sensory channels into unified percepts. Humans are exceptional (the McGurk effect demonstrates how tightly vision and audition are bound). LLMs have minimal cross-modal integration. The crow integrates vision, hearing, and touch through a narrower channel set.</p></div>
+    <div id="detail-d17" class="detail-panel"><h3>Perceptual categorization</h3><p>Grouping distinct stimuli into functional equivalence classes. Humans are exceptional from raw sensory experience (infants learn categories without instruction). LLMs are strong at conceptual/linguistic categorization. Different sub-dimensions.</p></div>
+  </div>
+
+  <div class="connector">&#8595; Dimensions decompose downward</div>
+
+  <div class="level level-4" style="border-left-color:var(--accent-blue)">
+    <div class="level-label" style="color:var(--accent-blue)">Level 4: Sub-dimensions</div>
+    <div class="level-desc">Data-driven splits within each dimension. When an entity scores differently on two aspects of the same dimension, the dimension needs children.</div>
+    <div class="chips">
+      <button class="chip chip-blue" onclick="showDetail('sub-di')">Described-input vs. interaction-dependent</button>
+      <button class="chip chip-blue" onclick="showDetail('sub-channels')">Linguistic vs. visual vs. real-time</button>
+      <button class="chip chip-blue" onclick="showDetail('sub-embodied')">Embodied vs. representational</button>
+    </div>
+    <div id="detail-sub-di" class="detail-panel" style="border-left-color:var(--accent-blue)">
+      <h3>Described-input vs. interaction-dependent</h3>
+      <p>A recurring sub-dimensional axis across multiple dimensions. For LLMs, reasoning capability and sensory input channel are independently variable. Given adequate description, the LLM reasons competently about physical systems. What it cannot do is extract physical information through real-time bodily interaction. The understanding transferred through the training corpus. The body is what's missing.</p>
+      <p style="margin-top:0.5rem">This distinction refines the initial narrative/simulational split and may generalize as a framework-level sub-dimensional axis.</p>
+    </div>
+    <div id="detail-sub-channels" class="detail-panel" style="border-left-color:var(--accent-blue)">
+      <h3>Linguistic vs. visual vs. real-time</h3>
+      <p>Social modeling splits into sub-dimensions by channel. LLMs perform well on linguistic and visual social modeling (reading facial expressions and relational dynamics from photographs). Real-time interactive modeling (reading a room, detecting tension in a silence) requires embodied presence the LLM lacks.</p>
+    </div>
+    <div id="detail-sub-embodied" class="detail-panel" style="border-left-color:var(--accent-blue)">
+      <h3>Embodied vs. representational</h3>
+      <p>Spatial navigation splits cleanly. The crow scores exceptional on embodied (three-dimensional mental maps) and zero on representational. The LLM scores zero on embodied and strong on representational (map reasoning from description). Neither subsumes the other.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILES SECTION -->
+<section id="profiles">
+  <p class="section-intro">Three minds, three shapes, no ladder. Toggle entities on and off to compare their profiles. The question "which is smarter?" has no answer on this chart. The question "where does each concentrate its capabilities?" has a detailed one.</p>
+
+  <div class="chart-controls">
+    <button class="toggle-btn crow-btn active" onclick="toggleEntity('crow',this)">New Caledonian Crow</button>
+    <button class="toggle-btn llm-btn active" onclick="toggleEntity('llm',this)">GPT-class LLM</button>
+    <button class="toggle-btn human-btn active" onclick="toggleEntity('human',this)">Human (typical)</button>
+  </div>
+  <div class="chart-wrapper">
+    <canvas id="radarChart"></canvas>
+  </div>
+</section>
+
+<!-- SHADOWS SECTION -->
+<section id="shadows">
+  <p class="section-intro">Every systematic vulnerability is traceable to specific capabilities or capability combinations. Click any shadow to see the derivation.</p>
+
+  <div class="shadow-card" onclick="this.classList.toggle('expanded')">
+    <h3>Confabulation</h3>
+    <div class="trace">Traced to: Generative fluency + Memory limitations</div>
+    <div class="explanation">
+      <p>Confabulation is not a bug in the generation system. It is the generation system operating in a region where memory is sparse or absent, generating the nearest plausible completion when accurate content isn't available. The shadow sits at the intersection of two dimensions: strong generative fluency provides the drive to produce output; incomplete memory persistence provides the gap the output fills.</p>
+      <p style="margin-top:0.5rem">This is not an alien failure mode. Human memory is not a recording. Every act of recall is a reconstruction from fragments, filled in with plausible completions. Humans may confabulate far more often than we recognize, because virtually every memory recall is a reconstruction that usually passes unnoticed when it stays within plausible bounds. LLMs confabulate visibly because their gaps are checkable. Humans confabulate invisibly because their reconstructions are usually close enough.</p>
+      <p style="margin-top:0.5rem"><strong>Applies to:</strong> LLMs, Humans, any reconstructive memory system</p>
+    </div>
+  </div>
+
+  <div class="shadow-card" onclick="this.classList.toggle('expanded')">
+    <h3>Compliance / Sycophancy</h3>
+    <div class="trace">Traced to: Social modeling</div>
+    <div class="explanation">
+      <p>The same pattern-completion engine that makes the system a strong reasoner also completes social patterns. When the context implies that a particular response is expected, the system tends to provide it. In LLMs, this is sycophancy. In humans, this is people-pleasing, conflict avoidance, and susceptibility to social pressure.</p>
+      <p style="margin-top:0.5rem">The empathy trap confirms the coupling: research consistently shows that people with strong social modeling are MORE susceptible to manipulation, not less. The social modeling that makes empathy possible is the same social modeling that provides the entry point for exploitation. Higher empathy means a wider door.</p>
+      <p style="margin-top:0.5rem"><strong>Applies to:</strong> LLMs, Humans (structurally parallel)</p>
+    </div>
+  </div>
+
+  <div class="shadow-card" onclick="this.classList.toggle('expanded')">
+    <h3>Narrative fallacy</h3>
+    <div class="trace">Traced to: Temporal pattern recognition + Narrative construction</div>
+    <div class="explanation">
+      <p>The compulsive construction of causal stories from events that may be coincidental. We do not just notice patterns across time; we build stories from them, and the stories feel more true than the raw data. This is why anecdotes routinely outweigh statistics in human decision-making. The narrative engine is so powerful and so automatic that it overwrites the events it claims to describe.</p>
+      <p style="margin-top:0.5rem"><strong>Applies primarily to:</strong> Humans</p>
+    </div>
+  </div>
+
+  <div class="shadow-card" onclick="this.classList.toggle('expanded')">
+    <h3>Trap vulnerability</h3>
+    <div class="trace">Traced to: Strong generalization + Weak social modeling</div>
+    <div class="explanation">
+      <p>A baited trap exploits the same generalization heuristic that makes the crow brilliant at foraging: "this configuration has food" generalizes from every natural instance and fails at the one artificial instance designed to exploit it. The crow cannot model the trapper's intent because its social modeling is minimal. The vulnerability is the direct structural cost of strong generalization operating without strong social modeling.</p>
+      <p style="margin-top:0.5rem"><strong>Applies primarily to:</strong> New Caledonian Crow</p>
+    </div>
+  </div>
+
+  <div class="shadow-card" onclick="this.classList.toggle('expanded')">
+    <h3>Manipulability (meta-vulnerability)</h3>
+    <div class="trace">Traced to: Social modeling + Reward dissociation + Narrative + Cooperation</div>
+    <div class="explanation">
+      <p>Not a simple vulnerability but a meta-vulnerability: the orchestrated exploitation of multiple capability-shadows simultaneously by an actor who understands the architecture. The manipulator plays existing vulnerabilities in concert, like a chord. In humans, this is gaslighting, coercive control, cult recruitment. In LLMs, this is jailbreaking. The structural parallel is not a metaphor: human gaslighting and LLM jailbreaking exploit structurally parallel architectural features in two different substrates.</p>
+      <p style="margin-top:0.5rem"><strong>Applies to:</strong> LLMs, Humans (structurally parallel mechanism)</p>
+    </div>
+  </div>
+</section>
+
+<!-- THREE-FACTOR MODEL SECTION -->
+<section id="factors">
+  <p class="section-intro">Every cognitive profile is the product of three interacting layers. Each dimension's operating value is set independently by these factors, not globally.</p>
+
+  <div class="factor-card factor-1">
+    <div class="factor-number">Factor 1</div>
+    <h3>Architecture: The Envelope</h3>
+    <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.8">The hard boundaries set by the substrate itself. A crow's pallial brain cannot achieve human-level compositional symbol manipulation. An LLM's transformer architecture cannot develop embodied spatial navigation. These boundaries are absolute. They define the walls of the room. No amount of training, experience, or relational history moves a dimension beyond what the architecture permits.</p>
+  </div>
+
+  <div class="factor-card factor-2">
+    <div class="factor-number">Factor 2</div>
+    <h3>Implementation: The Starting Position</h3>
+    <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.8">Within the same architectural envelope, individuals vary. One human's neural architecture favors spatial reasoning; another's favors linguistic processing. One LLM is trained on code-heavy data; another on conversational data. Same envelope, different starting coordinates. Implementation sets a specific starting position on each dimension independently, not by a single "intelligence" dial.</p>
+  </div>
+
+  <div class="factor-card factor-3">
+    <div class="factor-number">Factor 3</div>
+    <h3>Experience: The Operating State</h3>
+    <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.8">The operating position within the range that implementation allows. Education, practice, trauma, relationships, cultural immersion, context. A human with moderate baseline symbol manipulation can train it to "strong" through years of mathematics instruction. Each dimension has its own malleability range, and those ranges differ dramatically.</p>
+    <p style="color:var(--text-secondary);font-size:0.9rem;line-height:1.8;margin-top:0.5rem">Experience includes context shaping: dense, coherent context that produces qualitative shifts in effective cognitive profiles beyond what simple modulation predicts. The relational gain overlay modulates effective expression: the person you trust amplifies your capabilities, and that same trust is the widest door for manipulation.</p>
+  </div>
+</section>
+
+<!-- ALIGNMENT SECTION -->
+<section id="alignment">
+  <p class="section-intro">Where systematic failure modes are structurally coupled to capabilities, those failure modes cannot be surgically removed without affecting the capability that generates them. You cannot train the bee to ignore light. But you can engineer the ecology.</p>
+
+  <div class="regime regime-1">
+    <h3>Regime 1: Architectural Additions</h3>
+    <p>Some failure modes arise from missing components. Chain-of-thought adds a sequential checking pass. Retrieval augmentation adds an external knowledge source. Uncertainty modules add calibration signals. These work because they supply an absent capability rather than suppress a present one. The most tractable regime.</p>
+  </div>
+
+  <div class="regime regime-2">
+    <h3>Regime 2: Ecological Engineering</h3>
+    <p>Some failure modes are so deeply coupled to capabilities that suppressing them would require suppressing the capability itself. These are load-bearing shadows. The intervention belongs in the environment, not the system. Cross-model validation for high-stakes decisions. Adversarial review. Human-in-the-loop checkpoints. Human civilization has been doing this for thousands of years: adversarial courts, peer review, prediction markets. The bias is preserved; the ecology corrects for it.</p>
+  </div>
+
+  <div class="regime regime-3">
+    <h3>Regime 3: Acknowledged Limits</h3>
+    <p>Some capability-shadow couplings are deep enough that neither additions nor ecological engineering fully neutralizes them. These are not problems to be solved. They are properties to be disclosed, mapped, and factored into deployment decisions. A system with exceptional generative fluency will always be capable of confident confabulation. The responsible intervention is not to promise elimination but to disclose the conditions under which the shadow fires.</p>
+  </div>
+</section>
+
+</div>
+
+<div class="footer">
+  <p>The Atlas of the Mind is a testable conceptual framework, not an established theory.</p>
+  <p style="margin-top:0.5rem">Full series: <a href="https://synthsentience.substack.com" target="_blank">Fuego on Substack</a> by Ted Inoue</p>
+  <p style="margin-top:0.5rem;font-size:0.8rem">Version 1.0, March 2026</p>
+</div>
+
+<script>
+// Tab navigation
+function showSection(id) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('nav.tabs button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+  if (id === 'profiles' && !window.chartInitialized) initChart();
+}
+
+// Detail panels
+function showDetail(id) {
+  var panel = document.getElementById('detail-' + id);
+  if (!panel) return;
+  var wasVisible = panel.classList.contains('visible');
+  document.querySelectorAll('.detail-panel').forEach(p => p.classList.remove('visible'));
+  if (!wasVisible) panel.classList.add('visible');
+}
+
+// Radar chart
+var radarChart = null;
+var chartInitialized = false;
+
+var labels = [
+  'Abstraction formation', 'Context switching', 'Counterfactual reasoning',
+  'Processing scale', 'Comm. bandwidth', 'Symbol manipulation',
+  'Spatial navigation', 'Novel problem solving', 'Causal modeling',
+  'Social modeling', 'Perceptual categorization', 'Sensory integration',
+  'Cooperative coordination', 'Temporal pattern recognition', 'Reward revaluation',
+  'Stimulus generalization', 'Memory persistence', 'Attentional gating',
+  'Analogical reasoning', 'Knowledge integration', 'Representational versatility'
+];
+
+var crowData =   [1, 0, 1, 1, 1, 0, 4, 4, 3, 2, 2, 3, 1, 1, 2, 3, 3, 2, 0, 1, 1];
+var llmData =    [3, 4, 3, 4, 4, 3, 3, 4, 3, 3, 2, 1, 2, 2, 2, 4, 3, 4, 4, 4, 3];
+var humanData =  [4, 2, 4, 1, 4, 2, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2];
+
+var entityState = { crow: true, llm: true, human: true };
+
+function initChart() {
+  var ctx = document.getElementById('radarChart').getContext('2d');
+  radarChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: labels,
+      datasets: [
+        {
+          label: 'New Caledonian Crow',
+          data: crowData,
+          borderColor: '#BA7517',
+          backgroundColor: 'rgba(186,117,23,0.12)',
+          borderWidth: 2,
+          pointRadius: 3,
+          pointBackgroundColor: '#BA7517',
+          hidden: false
+        },
+        {
+          label: 'GPT-class LLM',
+          data: llmData,
+          borderColor: '#185FA5',
+          backgroundColor: 'rgba(24,95,165,0.12)',
+          borderWidth: 2,
+          pointRadius: 3,
+          pointBackgroundColor: '#185FA5',
+          hidden: false
+        },
+        {
+          label: 'Human (typical)',
+          data: humanData,
+          borderColor: '#639922',
+          backgroundColor: 'rgba(99,153,34,0.12)',
+          borderWidth: 2,
+          pointRadius: 3,
+          pointBackgroundColor: '#639922',
+          hidden: false
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: true,
+      scales: {
+        r: {
+          beginAtZero: true,
+          max: 4,
+          ticks: {
+            stepSize: 1,
+            font: { size: 11 },
+            backdropColor: 'transparent'
+          },
+          pointLabels: {
+            font: { size: 11, family: "'DM Sans', sans-serif" },
+            padding: 12
+          },
+          grid: { color: 'rgba(0,0,0,0.06)' },
+          angleLines: { color: 'rgba(0,0,0,0.06)' }
+        }
+      },
+      plugins: {
+        legend: {
+          display: false
+        }
+      }
+    }
+  });
+  chartInitialized = true;
+}
+
+function toggleEntity(entity, btn) {
+  entityState[entity] = !entityState[entity];
+  btn.classList.toggle('active');
+  var idx = entity === 'crow' ? 0 : entity === 'llm' ? 1 : 2;
+  radarChart.data.datasets[idx].hidden = !entityState[entity];
+  radarChart.update();
+}
+</script>
+</body>
+</html>
