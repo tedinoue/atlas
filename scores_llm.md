@@ -24,7 +24,7 @@ Scale: 0=None, 1=Minimal, 2=Moderate, 3=Strong, 4=Exceptional
 | 17 | Perceptual Categorization | 3 | Strong | "LLMs are strong at conceptual/linguistic categorization" (Part 1, Dim 15). But note: "The LLM categorizes from training data, not from perception. These are different sub-dimensions" |
 | 18 | Social Modeling | 3 | Strong | Initially rated Moderate, CORRECTED to Strong: "the LLM demonstrates competent reading of facial expressions, body language, relational dynamics... meets the operational definition of 'Strong' through available channels" (Part 2, LLM section) |
 | 19 | Causal Modeling | 3 | Strong | "LLMs are strong at described-input physical reasoning" (Part 1, Dim 20); CORRECTED from old narrative/simulational split. Strong described-input, None interaction-dependent. Composite: 3 |
-| 20 | Novel Problem Solving | 4 | Exceptional | "LLMs are exceptional at linguistic/conceptual problem solving, confirmed by nonsense-word tests" (Part 1, Dim 3); Rubric level 4 explicitly cites LLM. Note: "ARC-AGI-style visual-spatial pattern completion remains a weakness" |
+| 20 | Novel Problem Solving | 3 | Strong | Strong at linguistic/conceptual problem solving, confirmed by nonsense-word tests. ARC-AGI-style visual-spatial pattern completion remains a weakness. On absolute scale, strong but domain-dependent. (Score corrected from initial "Exceptional" to reflect absolute scale.) |
 | 21 | Spatial Navigation | 3 | Strong | "LLMs are strong at representational navigation (interpreting maps, computing routes, reconstructing abstract topological structures from natural language)" (Part 1, Dim 2). Embodied: 0. Representational: 3. |
 
 ## Notes
