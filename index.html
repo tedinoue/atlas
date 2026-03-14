@@ -653,10 +653,10 @@ section.active {
     <div id="detail-d2" class="detail-panel">
       <h3>Communication bandwidth</h3>
       <p>Range, precision, and flexibility of information transmittable to other agents.</p>
-      <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:25%"></div></div><span class="score-value">1</span></div>
+      <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:50%"></div></div><span class="score-value">2</span></div>
       <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:100%"></div></div><span class="score-value">4</span></div>
       <div class="score-bar"><span class="entity-label">Human</span><div class="bar-track"><div class="bar-fill human" style="width:100%"></div></div><span class="score-value">4</span></div>
-      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">Both LLMs and humans reach exceptional, but through different channels: LLMs via text across dozens of languages, humans via multi-channel simultaneous output (speech + gesture + facial expression + prosody).</p>
+      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">Both LLMs and humans reach exceptional, but through different channels: LLMs via text across dozens of languages, humans via multi-channel simultaneous output (speech + gesture + facial expression + prosody). Crows are moderate, with alarm calls, social positioning, and limited vocal repertoire.</p>
     </div>
     <div id="detail-d3" class="detail-panel">
       <h3>Processing scale</h3>
@@ -899,9 +899,9 @@ var labels = [
   'Analogical reasoning', 'Knowledge integration', 'Representational versatility'
 ];
 
-var crowData =   [1, 0, 1, 1, 1, 0, 4, 4, 3, 2, 2, 3, 1, 1, 2, 3, 3, 2, 0, 1, 1];
-var llmData =    [3, 4, 3, 4, 4, 3, 3, 4, 3, 3, 2, 1, 2, 2, 2, 4, 3, 4, 4, 4, 3];
-var humanData =  [4, 2, 4, 1, 4, 2, 3, 3, 3, 3, 3, 4, 4, 4, 3, 3, 3, 3, 2, 2, 2];
+var crowData =   [1, 0, 1, 1, 2, 0, 4, 4, 3, 2, 3, 3, 1, 1, 2, 3, 3, 1, 1, 1, 1];
+var llmData =    [3, 4, 3, 4, 4, 3, 3, 4, 3, 3, 3, 1, 2, 3, 1, 4, 3, 4, 4, 4, 3];
+var humanData =  [4, 2, 3.5, 1, 4, 2, 3, 3, 3, 3, 4, 4, 4, 4, 3, 4, 3, 3, 3, 2, 2];
 
 var entityState = { crow: true, llm: true, human: true };
 
