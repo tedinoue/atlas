@@ -24,7 +24,7 @@ Scale: 0=None, 1=Minimal, 2=Moderate, 3=Strong, 4=Exceptional
 | 17 | Perceptual Categorization | 3 | Strong | "crows strong within physical domain" (outline, Dim 15) |
 | 18 | Social Modeling | 2 | Moderate | "Crows are moderate" (Part 1, Dim 4); "re-caches food when observed" (Rubric level 2) |
 | 19 | Causal Modeling | 3 | Strong | "crows are strong at physical causal modeling, minimal at social" (Part 1, Dim 20). Composite: Strong (physical), Minimal (social). Chart value ~2.5-3 weighted toward physical strength. |
-| 20 | Novel Problem Solving | 4 | Exceptional | "crows exceptional physical" (Part 1, Dim 3); "Betty bending wire into a hook, first-trial metatool solutions" (Part 2, Rubric level 4 explicitly cites crow) |
+| 20 | Novel Problem Solving | 2 | Moderate | On absolute scale, wire-bending is impressive for body plan but confined to physical/mechanical problems within narrow domain. Relative to full range of cognitive agents, moderate. (Score corrected from initial "Exceptional" which used relative-to-body-plan rather than absolute scale.) |
 | 21 | Spatial Navigation | 4 | Exceptional | "crows exceptional embodied" (Part 1, Dim 2); "three-dimensional mental maps of hundreds of cache locations across large territories" (Part 2); Rubric level 4 explicitly cites corvid cache maps |
 
 ## Notes
