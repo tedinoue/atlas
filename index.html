@@ -693,10 +693,10 @@ section.active {
     <div id="detail-d20" class="detail-panel">
       <h3>Novel problem solving</h3>
       <p>Finding solutions to problems not encountered during training or development.</p>
-      <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:100%"></div></div><span class="score-value">4</span></div>
-      <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:100%"></div></div><span class="score-value">4</span></div>
-      <div class="score-bar"><span class="entity-label">Human</span><div class="bar-track"><div class="bar-fill human" style="width:75%"></div></div><span class="score-value">3</span></div>
-      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">Both the crow and LLM reach exceptional, but in opposite domains: the crow in physical/mechanical problem solving (bending wire into hooks from novel materials), the LLM in linguistic/conceptual (extracting and applying genuinely novel concepts). Humans are strong but domain-dependent.</p>
+      <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:50%"></div></div><span class="score-value">2</span></div>
+      <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:75%"></div></div><span class="score-value">3</span></div>
+      <div class="score-bar"><span class="entity-label">Human</span><div class="bar-track"><div class="bar-fill human" style="width:100%"></div></div><span class="score-value">4</span></div>
+      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">On an absolute scale, the crow's wire-bending is impressive for its body plan but remains confined to physical/mechanical problems within a narrow domain. LLMs are strong at linguistic/conceptual problem solving but struggle with visual-spatial pattern completion. Humans are exceptional: flexible cross-domain problem solving is the evolutionary specialization.</p>
     </div>
     <div id="detail-d21" class="detail-panel">
       <h3>Spatial navigation</h3>
@@ -899,9 +899,9 @@ var labels = [
   'Analogical reasoning', 'Knowledge integration', 'Representational versatility'
 ];
 
-var crowData =   [1, 0, 1, 1, 2, 0, 4, 4, 3, 2, 3, 3, 1, 1, 2, 3, 3, 1, 1, 1, 1];
-var llmData =    [3, 4, 3, 4, 4, 3, 3, 4, 3, 3, 3, 1, 2, 3, 1, 4, 3, 4, 4, 4, 3];
-var humanData =  [4, 2, 3.5, 1, 4, 2, 3, 3, 3, 3, 4, 4, 4, 4, 3, 4, 3, 3, 3, 2, 2];
+var crowData =   [1, 0, 1, 1, 2, 0, 4, 2, 3, 2, 3, 3, 1, 1, 2, 3, 3, 1, 1, 1, 1];
+var llmData =    [3, 4, 3, 4, 4, 3, 3, 3, 3, 3, 3, 1, 2, 3, 1, 4, 3, 4, 4, 4, 3];
+var humanData =  [4, 2, 3.5, 1, 4, 2, 3, 4, 3, 3, 4, 4, 4, 4, 3, 4, 3, 3, 3, 2, 2];
 
 var entityState = { crow: true, llm: true, human: true };
 
