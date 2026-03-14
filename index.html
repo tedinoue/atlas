@@ -646,7 +646,7 @@ section.active {
       <h3>Compositional symbol manipulation</h3>
       <p>Operating on structured symbolic expressions according to formal rules: logic, syntax, mathematics, programming.</p>
       <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:0%"></div></div><span class="score-value">0</span></div>
-      <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:75%"></div></div><span class="score-value">3</span></div>
+      <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:87.5%"></div></div><span class="score-value">3.5</span></div>
       <div class="score-bar"><span class="entity-label">Human</span><div class="bar-track"><div class="bar-fill human" style="width:50%"></div></div><span class="score-value">2</span></div>
       <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">Humans score moderate without training, strong with years of formal education, revealing one of the widest malleability ranges in the human profile.</p>
     </div>
@@ -661,7 +661,7 @@ section.active {
     <div id="detail-d3" class="detail-panel">
       <h3>Processing scale</h3>
       <p>Volume and speed of information that can be processed per unit time.</p>
-      <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:25%"></div></div><span class="score-value">1</span></div>
+      <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:12.5%"></div></div><span class="score-value">0.5</span></div>
       <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:100%"></div></div><span class="score-value">4</span></div>
       <div class="score-bar"><span class="entity-label">Human</span><div class="bar-track"><div class="bar-fill human" style="width:25%"></div></div><span class="score-value">1</span></div>
       <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">The most conspicuous valley in the human profile. We cannot hold more than about 4-7 items in working memory at once. The LLM processes entire books in seconds. This isn't a personal failing; it's architectural.</p>
@@ -677,18 +677,18 @@ section.active {
     <div id="detail-d19" class="detail-panel">
       <h3>Causal modeling</h3>
       <p>Building internal representations of cause-effect relationships that support intervention reasoning.</p>
-      <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:75%"></div></div><span class="score-value">3</span></div>
+      <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:62.5%"></div></div><span class="score-value">2.5</span></div>
       <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:75%"></div></div><span class="score-value">3</span></div>
       <div class="score-bar"><span class="entity-label">Human</span><div class="bar-track"><div class="bar-fill human" style="width:75%"></div></div><span class="score-value">3</span></div>
-      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">All three score strong, but in completely different domains. The crow excels at physical causation. The LLM excels at described-input reasoning. Humans bridge both with embodied intuition. The described-input / interaction-dependent split is a key Atlas finding.</p>
+      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">The crow is moderate-to-strong, excelling at physical causation but minimal at social. The LLM is strong at described-input reasoning. Humans bridge physical and social with embodied intuition. The described-input / interaction-dependent split is a key Atlas finding.</p>
     </div>
     <div id="detail-d11" class="detail-panel">
       <h3>Memory persistence</h3>
       <p>Retaining and retrieving information across time, from working memory through long-term storage.</p>
       <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:75%"></div></div><span class="score-value">3</span></div>
-      <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:75%"></div></div><span class="score-value">3</span></div>
+      <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:62.5%"></div></div><span class="score-value">2.5</span></div>
       <div class="score-bar"><span class="entity-label">Human</span><div class="bar-track"><div class="bar-fill human" style="width:75%"></div></div><span class="score-value">3</span></div>
-      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">All three score strong but with radically different profiles. Humans have exceptional procedural memory but a severe working memory bottleneck. LLMs have exceptional semantic memory but zero native cross-session persistence. Crows have exceptional spatial-episodic memory for cache locations. Memory limitations are one half of the confabulation shadow.</p>
+      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">Radically different profiles. Humans have exceptional procedural memory but a severe working memory bottleneck. LLMs have exceptional semantic and in-context memory but zero native cross-session persistence, pulling the composite to 2.5. Crows have strong spatial-episodic memory for cache locations. Memory limitations are one half of the confabulation shadow.</p>
     </div>
     <div id="detail-d20" class="detail-panel">
       <h3>Novel problem solving</h3>
@@ -899,9 +899,9 @@ var labels = [
   'Analogical reasoning', 'Knowledge integration', 'Representational versatility'
 ];
 
-var crowData =   [1, 0, 1, 1, 2, 0, 4, 2, 3, 2, 3, 3, 1, 1, 2, 3, 3, 1, 1, 1, 1];
-var llmData =    [3, 4, 3, 4, 4, 3, 3, 3, 3, 3, 3, 1, 2, 3, 1, 4, 3, 4, 4, 4, 3];
-var humanData =  [4, 2, 3.5, 1, 4, 2, 3, 4, 3, 3, 4, 4, 4, 4, 3, 4, 3, 3, 3, 2, 2];
+var crowData =   [1.5, 1, 1, 0.5, 2, 0, 4, 2, 2.5, 2, 2.5, 3, 0.5, 2, 2, 3.5, 3, 2, 1.5, 0.5, 0.5];
+var llmData =    [3.5, 4, 3.5, 4, 4, 3.5, 3, 3, 3, 3, 2.5, 0.5, 2.5, 3, 1.5, 4, 2.5, 2, 3.5, 4, 3];
+var humanData =  [4, 2, 3.5, 1, 4, 2, 3, 4, 3, 3, 3, 4, 4, 4, 3, 3.5, 3, 3, 3, 3, 2.5];
 
 var entityState = { crow: true, llm: true, human: true };
 
