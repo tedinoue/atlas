@@ -663,8 +663,8 @@ section.active {
       <p>Volume and speed of information that can be processed per unit time.</p>
       <div class="score-bar"><span class="entity-label">Crow</span><div class="bar-track"><div class="bar-fill crow" style="width:12.5%"></div></div><span class="score-value">0.5</span></div>
       <div class="score-bar"><span class="entity-label">LLM</span><div class="bar-track"><div class="bar-fill llm" style="width:100%"></div></div><span class="score-value">4</span></div>
-      <div class="score-bar"><span class="entity-label">Human</span><div class="bar-track"><div class="bar-fill human" style="width:25%"></div></div><span class="score-value">1</span></div>
-      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">The most conspicuous valley in the human profile. We cannot hold more than about 4-7 items in working memory at once. The LLM processes entire books in seconds. This isn't a personal failing; it's architectural.</p>
+      <div class="score-bar"><span class="entity-label">Human</span><div class="bar-track"><div class="bar-fill human" style="width:62.5%"></div></div><span class="score-value">2.5</span></div>
+      <p style="margin-top:0.5rem;font-size:0.85rem;color:var(--text-secondary)">Conscious throughput is minimal (~250 wpm, one train of thought), but the total architecture includes massive unconscious parallel processing and persistence compensation (months of sustained attention on a single problem). The composite of 2.5 reflects the full cognitive system, not just the conscious bottleneck.</p>
     </div>
     <div id="detail-d18" class="detail-panel">
       <h3>Social modeling</h3>
@@ -901,7 +901,7 @@ var labels = [
 
 var crowData =   [1.5, 1, 1, 0.5, 2, 0, 4, 2, 2.5, 2, 2.5, 3, 0.5, 2, 2, 3.5, 3, 2, 1.5, 0.5, 0.5];
 var llmData =    [3.5, 4, 3.5, 4, 4, 3.5, 3, 3, 3, 3, 2.5, 0.5, 2.5, 3, 1.5, 4, 2.5, 2, 3.5, 4, 3];
-var humanData =  [4, 2, 3.5, 1, 4, 2, 3, 4, 3, 3, 3, 4, 4, 4, 3, 3.5, 3, 3, 3, 3, 2.5];
+var humanData =  [4, 2, 3.5, 2.5, 4, 2, 3, 4, 3, 3, 3, 4, 4, 4, 3, 3.5, 3, 3, 3, 3, 2.5];
 
 var entityState = { crow: true, llm: true, human: true };
 
