@@ -7,6 +7,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
     <style>
+        /* === RESET & BASE === */
         *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
         :root {
@@ -35,19 +36,25 @@
 
         body {
             font-family: var(--font-sans);
-            background-color: #f8f7f5;
+            background: #f8f7f5;
             color: var(--slate-800);
-            line-height: 1.6;
+            line-height: 1.7;
             display: flex;
             flex-direction: column;
             height: 100vh;
             overflow: hidden;
-            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
         }
 
         .serif { font-family: var(--font-serif); }
 
-        /* --- HEADER --- */
+        /* === SCROLLBAR === */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--slate-100); }
+        ::-webkit-scrollbar-thumb { background: var(--slate-300); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--slate-400); }
+
+        /* === HEADER === */
         .site-header {
             background: var(--slate-800);
             color: var(--white);
@@ -63,27 +70,18 @@
             justify-content: space-between;
             align-items: center;
         }
-        .header-title {
-            font-family: var(--font-serif);
-            font-size: 1.5rem;
-            font-weight: 700;
-        }
-        .header-subtitle {
-            font-size: 0.95rem;
-            color: var(--slate-300);
-            margin-top: 0.25rem;
-            font-weight: 300;
-        }
+        .header-title { font-family: var(--font-serif); font-size: 1.5rem; font-weight: 700; }
+        .header-sub { font-size: 0.95rem; color: var(--slate-300); margin-top: 0.25rem; font-weight: 300; }
         .header-badges { display: none; gap: 0.5rem; }
         .header-badge {
             padding: 0.25rem 0.6rem;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
             background: var(--slate-700);
             border: 1px solid var(--slate-600);
             border-radius: 4px;
         }
 
-        /* --- LAYOUT --- */
+        /* === LAYOUT === */
         .workspace {
             display: flex;
             flex: 1;
@@ -91,7 +89,7 @@
             flex-direction: column;
         }
 
-        /* --- SIDEBAR NAV --- */
+        /* === SIDEBAR NAV === */
         .sidebar {
             width: 100%;
             background: var(--slate-50);
@@ -100,26 +98,22 @@
             flex-shrink: 0;
             display: flex;
             flex-direction: row;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
+            box-shadow: inset -1px 0 0 var(--slate-200);
         }
         .sidebar-header {
             display: none;
             padding: 1rem;
             border-bottom: 1px solid var(--slate-200);
         }
-        .sidebar-label {
-            font-size: 0.7rem;
+        .sidebar-header h3 {
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.1em;
             color: var(--slate-500);
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
-        .sidebar-desc {
-            font-size: 0.8rem;
-            color: var(--slate-600);
-            margin-bottom: 1rem;
-        }
+        .sidebar-header p { font-size: 0.85rem; color: var(--slate-600); }
         .nav-list {
             list-style: none;
             display: flex;
@@ -127,7 +121,7 @@
             overflow-x: auto;
             padding: 0.5rem;
         }
-        .nav-list li {
+        .nav-item {
             cursor: pointer;
             padding: 0.75rem 1rem;
             font-size: 0.95rem;
@@ -136,29 +130,24 @@
             white-space: nowrap;
             transition: background 0.15s;
         }
-        .nav-list li:hover {
-            background: var(--slate-100);
-            color: var(--slate-900);
-        }
-        .nav-list li.nav-active {
+        .nav-item:hover { background: var(--slate-100); color: var(--slate-900); }
+        .nav-item.nav-active {
             background: var(--slate-200);
             border-left: 4px solid var(--slate-700);
             font-weight: 600;
         }
 
-        /* --- MAIN CONTENT --- */
+        /* === MAIN CONTENT === */
         .content-main {
             flex: 1;
             overflow-y: auto;
             padding: 1.5rem;
             background: var(--white);
+            position: relative;
         }
-        .content-inner {
-            max-width: 64rem;
-            margin: 0 auto;
-        }
+        .content-inner { max-width: 64rem; margin: 0 auto; }
 
-        /* --- SECTION HEADER --- */
+        /* === SECTION HEADER === */
         .section-header {
             margin-bottom: 2rem;
             border-bottom: 1px solid var(--slate-200);
@@ -166,18 +155,18 @@
         }
         .section-title {
             font-family: var(--font-serif);
-            font-size: 2rem;
+            font-size: 1.9rem;
             font-weight: 700;
             color: var(--slate-800);
             margin-bottom: 0.75rem;
         }
         .section-desc {
-            font-size: 1.15rem;
+            font-size: 1.1rem;
             color: var(--slate-600);
-            line-height: 1.7;
+            line-height: 1.8;
         }
 
-        /* --- FILTER BAR --- */
+        /* === FILTER BAR === */
         .filter-bar {
             margin-bottom: 1.5rem;
             background: var(--slate-50);
@@ -186,22 +175,12 @@
             border: 1px solid var(--slate-200);
         }
         .filter-bar.hidden { display: none; }
-        .filter-label {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--slate-700);
-            margin-right: 0.75rem;
-        }
-        .filter-buttons {
-            margin-top: 0.5rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
+        .filter-label { font-size: 0.95rem; font-weight: 600; color: var(--slate-700); }
+        .filter-buttons { margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.5rem; }
         .filter-btn {
-            padding: 0.35rem 0.8rem;
+            padding: 0.35rem 0.85rem;
             font-size: 0.85rem;
-            border-radius: 9999px;
+            border-radius: 999px;
             border: 1px solid var(--slate-300);
             background: var(--white);
             cursor: pointer;
@@ -209,40 +188,33 @@
             font-family: var(--font-sans);
         }
         .filter-btn:hover { background: var(--slate-100); }
-        .filter-btn.ring {
-            box-shadow: 0 0 0 2px var(--slate-400);
-            outline-offset: 1px;
-        }
-        .filter-btn.ring-all { background: var(--slate-200); }
+        .filter-btn.active { outline: 2px solid var(--slate-400); outline-offset: 1px; }
+        .filter-btn.active[data-filter="all"] { background: var(--slate-200); }
 
-        /* --- TAG COLORS --- */
+        /* === TAG COLORS === */
         .tag-silent { background: #dbeafe; color: #1e40af; border-color: var(--blue-200); }
         .tag-gravitational { background: #fce7f3; color: #9d174d; border-color: var(--pink-200); }
         .tag-narrative { background: #fef08a; color: #854d0e; border-color: var(--yellow-200); }
         .tag-selective { background: #e0e7ff; color: #3730a3; border-color: var(--indigo-200); }
 
-        /* --- OVERVIEW DASHBOARD --- */
-        .overview-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-        .overview-grid.hidden { display: none; }
-
-        .card {
+        /* === OVERVIEW DASHBOARD === */
+        .dashboard { display: flex; flex-direction: column; gap: 2rem; }
+        .dashboard.hidden { display: none; }
+        .dash-grid { display: grid; grid-template-columns: 1fr; gap: 1.5rem; }
+        .dash-card {
             background: var(--white);
-            padding: 1.25rem;
+            padding: 1.5rem;
             border-radius: 8px;
             border: 1px solid var(--slate-200);
-            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
         }
-        .card-title {
+        .dash-card h3 {
+            font-family: var(--font-serif);
             font-weight: 700;
             color: var(--slate-800);
             margin-bottom: 0.75rem;
             padding-bottom: 0.5rem;
             border-bottom: 1px solid var(--slate-200);
-            font-size: 1.1rem;
         }
         .strategy-list { list-style: none; display: flex; flex-direction: column; gap: 0.75rem; }
         .strategy-item {
@@ -271,37 +243,30 @@
             height: 350px;
             max-height: 400px;
         }
-        .chart-desc {
-            font-size: 0.85rem;
-            color: var(--slate-500);
-            margin-bottom: 1rem;
-        }
+        .chart-subtitle { font-size: 0.85rem; color: var(--slate-500); margin-bottom: 1rem; }
 
-        .instructions-banner {
+        .instructions-box {
             background: var(--slate-800);
             color: var(--white);
             padding: 1.5rem;
             border-radius: 12px;
-            margin-top: 1.5rem;
         }
-        .instructions-banner h3 {
+        .instructions-box h3 {
+            font-family: var(--font-serif);
             font-weight: 700;
             font-size: 1.15rem;
             margin-bottom: 0.5rem;
+            border: none;
+            padding: 0;
         }
-        .instructions-banner p {
-            color: var(--slate-300);
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
+        .instructions-box p { color: var(--slate-300); font-size: 0.95rem; }
 
-        /* --- LITERATURE CARDS --- */
+        /* === LITERATURE CARDS === */
         .lit-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
         .lit-grid.hidden { display: none; }
-
         .lit-card {
             background: var(--white);
-            padding: 1.25rem;
+            padding: 1.5rem;
             border-radius: 8px;
             border: 1px solid var(--slate-200);
             display: flex;
@@ -313,14 +278,9 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
         }
-        .lit-card-body { flex: 1; }
-        .lit-authors {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--slate-800);
-            display: inline;
-        }
+        .lit-authors { font-size: 0.95rem; font-weight: 700; color: var(--slate-800); }
         .lit-year {
+            display: inline-block;
             font-size: 0.8rem;
             color: var(--slate-500);
             background: var(--slate-100);
@@ -330,56 +290,45 @@
         }
         .lit-title {
             font-family: var(--font-serif);
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-weight: 700;
             color: var(--slate-900);
-            line-height: 1.35;
-            margin: 0.25rem 0;
+            line-height: 1.4;
+            margin-bottom: 0.15rem;
         }
-        .lit-journal {
-            font-size: 0.85rem;
-            color: var(--slate-500);
-            font-style: italic;
-            margin-bottom: 0.75rem;
-        }
+        .lit-journal { font-size: 0.85rem; color: var(--slate-500); font-style: italic; margin-bottom: 0.6rem; }
         .lit-finding {
             font-size: 0.95rem;
             color: var(--slate-700);
-            line-height: 1.65;
+            line-height: 1.7;
             border-left: 4px solid var(--slate-200);
-            padding-left: 0.75rem;
+            padding-left: 0.85rem;
         }
-        .lit-finding strong {
-            color: var(--slate-900);
-            font-weight: 600;
-        }
-        .lit-card-tag {
+        .lit-finding strong { color: var(--slate-900); }
+        .lit-parallel {
             display: flex;
             flex-direction: column;
             align-items: flex-end;
             border-top: 1px solid var(--slate-100);
             padding-top: 0.75rem;
         }
-        .tag-label {
-            font-size: 0.65rem;
+        .parallel-label {
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.1em;
             color: var(--slate-400);
             font-weight: 700;
             margin-bottom: 0.25rem;
         }
-        .tag-badge {
-            padding: 0.35rem 0.8rem;
+        .parallel-tag {
+            padding: 0.35rem 0.85rem;
             font-size: 0.85rem;
-            border-radius: 9999px;
+            border-radius: 999px;
             font-weight: 600;
             text-align: center;
-            width: 100%;
-            max-width: 12rem;
             box-shadow: 0 1px 2px rgba(0,0,0,0.05);
         }
-
-        .empty-state {
+        .lit-empty {
             padding: 2rem;
             text-align: center;
             color: var(--slate-500);
@@ -389,13 +338,7 @@
             border: 1px solid var(--slate-200);
         }
 
-        /* --- SCROLLBAR --- */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: var(--slate-300); border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--slate-400); }
-
-        /* --- RESPONSIVE --- */
+        /* === RESPONSIVE === */
         @media (min-width: 768px) {
             .workspace { flex-direction: row; }
             .sidebar {
@@ -408,25 +351,26 @@
                 overflow-x: hidden;
                 padding: 0;
             }
-            .nav-list li {
+            .nav-item {
                 white-space: normal;
                 padding: 0.6rem 1rem;
                 border-bottom: none;
             }
-            .content-main { padding: 2rem; }
+            .content-main { padding: 2.5rem; }
             .header-badges { display: flex; }
-            .overview-grid { grid-template-columns: 1fr 1fr; }
-            .lit-card {
-                flex-direction: row;
-            }
-            .lit-card-tag {
+            .dash-grid { grid-template-columns: 1fr 1fr; }
+            .lit-card { flex-direction: row; }
+            .lit-parallel {
                 width: 12rem;
                 flex-shrink: 0;
+                align-items: flex-end;
+                justify-content: flex-start;
                 border-top: none;
                 border-left: 1px solid var(--slate-100);
                 padding-top: 0;
                 padding-left: 1rem;
             }
+            .parallel-tag { width: 100%; }
         }
     </style>
 </head>
@@ -436,7 +380,7 @@
         <div class="header-inner">
             <div>
                 <h1 class="header-title">Semantic Coherence in Vision</h1>
-                <p class="header-subtitle">Parallels between AI Multimodal Conflict Resolution and Human Perception</p>
+                <p class="header-sub">Parallels between AI Multimodal Conflict Resolution and Human Perception</p>
             </div>
             <div class="header-badges">
                 <span class="header-badge">Literature Survey</span>
@@ -446,18 +390,18 @@
     </header>
 
     <div class="workspace">
-
+        
         <nav class="sidebar">
             <div class="sidebar-header">
-                <h3 class="sidebar-label">Research Areas</h3>
-                <p class="sidebar-desc">Select an area to view relevant human psychological analogs to VLM behaviors.</p>
+                <h3>Research Areas</h3>
+                <p>Select an area to view relevant human psychological analogs to VLM behaviors.</p>
             </div>
             <ul id="navList" class="nav-list"></ul>
         </nav>
 
         <main class="content-main">
             <div class="content-inner">
-
+                
                 <div id="sectionHeader" class="section-header">
                     <h2 id="sectionTitle" class="section-title">Overview: The Coherence Gradient</h2>
                     <p id="sectionDesc" class="section-desc">
@@ -477,27 +421,29 @@
                 </div>
 
                 <div id="contentArea">
-
-                    <div id="overviewDashboard" class="overview-grid">
-                        <div class="card">
-                            <h3 class="card-title">VLM Conflict Resolution Strategies</h3>
-                            <ul class="strategy-list">
-                                <li class="strategy-item"><span class="strategy-dot dot-blue"></span><div><strong>Silent Override:</strong> Reporting expected color (calling orange banana "yellow").</div></li>
-                                <li class="strategy-item"><span class="strategy-dot dot-pink"></span><div><strong>Gravitational Distortion:</strong> Pulling report toward expectation (pink stop sign called "red").</div></li>
-                                <li class="strategy-item"><span class="strategy-dot dot-yellow"></span><div><strong>Narrative Construction:</strong> Confabulating explanations ("digital placeholder").</div></li>
-                                <li class="strategy-item"><span class="strategy-dot dot-indigo"></span><div><strong>Selective Attention Failure:</strong> Omitting the anomalous object entirely.</div></li>
-                            </ul>
-                        </div>
-
-                        <div class="card" style="display:flex;flex-direction:column;align-items:center;justify-content:center">
-                            <h3 class="card-title" style="width:100%;text-align:left">The Gradient of Mismatch Resolution</h3>
-                            <p class="chart-desc" style="width:100%;text-align:left">As semantic violation magnitude increases, both biological and artificial networks shift strategies to maintain coherence.</p>
-                            <div class="chart-container">
-                                <canvas id="strategyGradientChart"></canvas>
+                    <div id="overviewDashboard" class="dashboard">
+                        
+                        <div class="dash-grid">
+                            <div class="dash-card">
+                                <h3>VLM Conflict Resolution Strategies</h3>
+                                <ul class="strategy-list">
+                                    <li class="strategy-item"><span class="strategy-dot dot-blue"></span><div><strong>Silent Override:</strong> Reporting expected color (calling orange banana "yellow").</div></li>
+                                    <li class="strategy-item"><span class="strategy-dot dot-pink"></span><div><strong>Gravitational Distortion:</strong> Pulling report toward expectation (pink stop sign called "red").</div></li>
+                                    <li class="strategy-item"><span class="strategy-dot dot-yellow"></span><div><strong>Narrative Construction:</strong> Confabulating explanations ("digital placeholder").</div></li>
+                                    <li class="strategy-item"><span class="strategy-dot dot-indigo"></span><div><strong>Selective Attention Failure:</strong> Omitting the anomalous object entirely.</div></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="dash-card" style="display:flex;flex-direction:column;align-items:center;justify-content:center">
+                                <h3 style="width:100%;text-align:left">The Gradient of Mismatch Resolution</h3>
+                                <p class="chart-subtitle" style="width:100%;text-align:left">As semantic violation magnitude increases, both biological and artificial networks shift strategies to maintain coherence.</p>
+                                <div class="chart-container">
+                                    <canvas id="strategyGradientChart"></canvas>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="instructions-banner" style="grid-column: 1 / -1">
+                        <div class="instructions-box">
                             <h3>&#8594; Instructions for Exploration</h3>
                             <p>Use the navigation menu to dive into the 5 specific areas of the literature survey. For each area, you will find empirical studies, their core findings, and direct mappings to how Vision-Language Models behave under similar visual/semantic stress.</p>
                         </div>
@@ -706,10 +652,10 @@
             navList.innerHTML = '';
             reportData.areas.forEach(area => {
                 const li = document.createElement('li');
+                li.className = 'nav-item' + (currentTab === area.id ? ' nav-active' : '');
                 li.textContent = area.title;
-                if (currentTab === area.id) li.classList.add('nav-active');
                 li.onclick = () => {
-                    document.querySelectorAll('#navList li').forEach(el => el.classList.remove('nav-active'));
+                    document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('nav-active'));
                     li.classList.add('nav-active');
                     currentFilter = 'all';
                     updateFilterUI();
@@ -744,26 +690,26 @@
         function renderLiteratureCards(papers) {
             const litList = document.getElementById('literatureList');
             litList.innerHTML = '';
-            const filteredPapers = currentFilter === 'all' ? papers : papers.filter(p => p.aiParallel === currentFilter);
+            const filtered = currentFilter === 'all' ? papers : papers.filter(p => p.aiParallel === currentFilter);
 
-            if (filteredPapers.length === 0) {
-                litList.innerHTML = '<div class="empty-state">No papers in this category align precisely with the "' + currentFilter + '" AI behavior.</div>';
+            if (filtered.length === 0) {
+                litList.innerHTML = '<div class="lit-empty">No papers in this category align precisely with the "' + currentFilter + '" AI behavior.</div>';
                 return;
             }
 
-            filteredPapers.forEach(paper => {
+            filtered.forEach(paper => {
                 const card = document.createElement('div');
                 card.className = 'lit-card';
                 card.innerHTML =
-                    '<div class="lit-card-body">' +
+                    '<div style="flex:1">' +
                         '<div><span class="lit-authors">' + paper.authors + '</span><span class="lit-year">' + paper.year + '</span></div>' +
                         '<h4 class="lit-title">' + paper.title + '</h4>' +
                         '<p class="lit-journal">' + paper.journal + '</p>' +
                         '<p class="lit-finding"><strong>Key Finding:</strong> ' + paper.finding + '</p>' +
                     '</div>' +
-                    '<div class="lit-card-tag">' +
-                        '<span class="tag-label">VLM Parallel</span>' +
-                        '<span class="tag-badge ' + paper.tagClass + '">' + paper.aiParallel + '</span>' +
+                    '<div class="lit-parallel">' +
+                        '<span class="parallel-label">VLM Parallel</span>' +
+                        '<span class="parallel-tag ' + paper.tagClass + '">' + paper.aiParallel + '</span>' +
                     '</div>';
                 litList.appendChild(card);
             });
@@ -782,11 +728,7 @@
 
         function updateFilterUI() {
             document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.classList.remove('ring', 'ring-all');
-                if (btn.dataset.filter === currentFilter) {
-                    btn.classList.add('ring');
-                    if (currentFilter === 'all') btn.classList.add('ring-all');
-                }
+                btn.classList.toggle('active', btn.dataset.filter === currentFilter);
             });
         }
 
