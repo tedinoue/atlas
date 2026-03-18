@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Semantic Coherence in AI & Human Vision</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:ital,wght@0,300;0,400;0,700;1,300&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #f8f7f5; color: #1e293b; }
+        h1, h2, h3, .serif { font-family: 'Merriweather', serif; }
+        .chart-container { position: relative; width: 100%; max-width: 700px; margin: 0 auto; height: 350px; max-height: 400px; }
+        .nav-active { background-color: #e2e8f0; border-left: 4px solid #334155; font-weight: 600; }
+        .lit-card { transition: all 0.2s ease-in-out; }
+        .lit-card:hover { transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .tag-silent { background-color: #dbeafe; color: #1e40af; }
+        .tag-gravitational { background-color: #fce7f3; color: #9d174d; }
+        .tag-narrative { background-color: #fef08a; color: #854d0e; }
+        .tag-selective { background-color: #e0e7ff; color: #3730a3; }
+        
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="flex flex-col h-screen overflow-hidden">
+
+    <header class="bg-slate-800 text-white p-4 shadow-md z-10 shrink-0">
+        <div class="max-w-7xl mx-auto flex justify-between items-center">
+            <div>
+                <h1 class="text-xl md:text-2xl font-bold">Semantic Coherence in Vision</h1>
+                <p class="text-sm text-slate-300 mt-1 font-light">Parallels between AI Multimodal Conflict Resolution and Human Perception</p>
+            </div>
+            <div class="hidden md:flex space-x-2">
+                <span class="px-2 py-1 text-xs bg-slate-700 rounded border border-slate-600">Literature Survey</span>
+                <span class="px-2 py-1 text-xs bg-slate-700 rounded border border-slate-600">Interactive DB</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex flex-1 overflow-hidden flex-col md:flex-row">
+        
+        <nav class="w-full md:w-64 bg-slate-50 border-r border-slate-200 overflow-y-auto shrink-0 flex flex-row md:flex-col shadow-inner">
+            <div class="p-4 hidden md:block border-b border-slate-200">
+                <h3 class="text-xs uppercase tracking-wider text-slate-500 font-bold mb-2">Research Areas</h3>
+                <p class="text-xs text-slate-600 mb-4">Select an area to view relevant human psychological analogs to VLM behaviors.</p>
+            </div>
+            <ul id="navList" class="flex md:flex-col w-full overflow-x-auto md:overflow-x-hidden p-2 md:p-0">
+            </ul>
+        </nav>
+
+        <main class="flex-1 overflow-y-auto p-4 md:p-8 bg-white relative">
+            <div class="max-w-5xl mx-auto">
+                
+                <div id="sectionHeader" class="mb-8 border-b border-slate-200 pb-6">
+                    <h2 id="sectionTitle" class="text-3xl font-bold text-slate-800 mb-3">Overview: The Coherence Gradient</h2>
+                    <p id="sectionDesc" class="text-slate-600 leading-relaxed text-lg">
+                        Multimodal AI models (GPT-4o, Claude 3, Gemini) enforce semantic coherence when visual input contradicts strong priors (e.g., a pink stop sign). This application maps the four primary AI resolution strategies observed in experiments to established human perceptual phenomena, exploring the literature across predictive coding, schema theory, and confabulation.
+                    </p>
+                </div>
+
+                <div id="filterContainer" class="mb-6 hidden bg-slate-50 p-4 rounded-lg border border-slate-200">
+                    <span class="text-sm font-semibold text-slate-700 mr-3">Filter Human Literature by AI Strategy Parallel:</span>
+                    <div class="mt-2 flex flex-wrap gap-2" id="filterButtons">
+                        <button class="px-3 py-1 text-xs rounded-full border border-slate-300 bg-white hover:bg-slate-100 transition filter-btn" data-filter="all">All</button>
+                        <button class="px-3 py-1 text-xs rounded-full tag-silent border border-blue-200 hover:opacity-80 transition filter-btn" data-filter="Silent Override">Silent Override</button>
+                        <button class="px-3 py-1 text-xs rounded-full tag-gravitational border border-pink-200 hover:opacity-80 transition filter-btn" data-filter="Gravitational Distortion">Gravitational Distortion</button>
+                        <button class="px-3 py-1 text-xs rounded-full tag-narrative border border-yellow-200 hover:opacity-80 transition filter-btn" data-filter="Narrative Construction">Narrative Construction</button>
+                        <button class="px-3 py-1 text-xs rounded-full tag-selective border border-indigo-200 hover:opacity-80 transition filter-btn" data-filter="Selective Attention">Selective Attention</button>
+                    </div>
+                </div>
+
+                <div id="contentArea">
+                    <div id="overviewDashboard" class="space-y-8">
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm">
+                                <h3 class="font-bold text-slate-800 mb-3 border-b pb-2">VLM Conflict Resolution Strategies</h3>
+                                <ul class="space-y-3 text-sm">
+                                    <li class="flex items-start"><span class="w-3 h-3 rounded-full bg-blue-500 mt-1 mr-2 shrink-0"></span><div><strong>Silent Override:</strong> Reporting expected color (calling orange banana "yellow").</div></li>
+                                    <li class="flex items-start"><span class="w-3 h-3 rounded-full bg-pink-500 mt-1 mr-2 shrink-0"></span><div><strong>Gravitational Distortion:</strong> Pulling report toward expectation (pink stop sign called "red").</div></li>
+                                    <li class="flex items-start"><span class="w-3 h-3 rounded-full bg-yellow-500 mt-1 mr-2 shrink-0"></span><div><strong>Narrative Construction:</strong> Confabulating explanations ("digital placeholder").</div></li>
+                                    <li class="flex items-start"><span class="w-3 h-3 rounded-full bg-indigo-500 mt-1 mr-2 shrink-0"></span><div><strong>Selective Attention Failure:</strong> Omitting the anomalous object entirely.</div></li>
+                                </ul>
+                            </div>
+                            
+                            <div class="bg-white p-5 rounded-lg border border-slate-200 shadow-sm flex flex-col items-center justify-center">
+                                <h3 class="font-bold text-slate-800 mb-2 w-full text-left">The Gradient of Mismatch Resolution</h3>
+                                <p class="text-xs text-slate-500 mb-4 w-full text-left">As semantic violation magnitude increases, both biological and artificial networks shift strategies to maintain coherence.</p>
+                                <div class="chart-container">
+                                    <canvas id="strategyGradientChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-slate-800 text-white p-6 rounded-xl">
+                            <h3 class="font-bold text-lg mb-2 flex items-center">
+                                <span class="mr-2 text-xl">&rarr;</span> Instructions for Exploration
+                            </h3>
+                            <p class="text-slate-300 text-sm">Use the navigation menu to dive into the 5 specific areas of the literature survey. For each area, you will find empirical studies, their core findings, and direct mappings to how Vision-Language Models behave under similar visual/semantic stress.</p>
+                        </div>
+                    </div>
+
+                    <div id="literatureList" class="hidden grid grid-cols-1 gap-4">
+                    </div>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const reportData = {
+            areas: [
+                {
+                    id: 'overview',
+                    title: 'Overview',
+                    desc: 'Introduction to the semantic coherence problem in multimodal AI and the biological parallels.'
+                },
+                {
+                    id: 'area1',
+                    title: '1. Color & Semantics',
+                    desc: 'Studies demonstrating top-down semantic influence on color perception in humans, focusing on object identity, memory color effects, and color-modified familiar objects.',
+                    papers: [
+                        {
+                            authors: "Hansen, T., Olkkonen, M., Walter, S., & Gegenfurtner, K. R.",
+                            year: 2006,
+                            journal: "Nature Neuroscience",
+                            title: "Memory modulates color appearance",
+                            finding: "When subjects adjusted digital images of characteristically colored fruits (e.g., bananas) until they appeared purely gray, they overcompensated into the opponent color (bluish), demonstrating that 'memory color' actively distorts real-time perception.",
+                            aiParallel: "Gravitational Distortion",
+                            tagClass: "tag-gravitational"
+                        },
+                        {
+                            authors: "Witzel, C., Valkova, H., Hansen, T., & Gegenfurtner, K. R.",
+                            year: 2011,
+                            journal: "Journal of Vision",
+                            title: "Object knowledge modulates colour appearance",
+                            finding: "Confirmed that object identity (e.g., seeing a shape recognized as a Smurf) significantly shifts the perceived hue of the object toward its typical color, even when the actual stimulus is neutrally colored.",
+                            aiParallel: "Gravitational Distortion",
+                            tagClass: "tag-gravitational"
+                        },
+                        {
+                            authors: "Levin, D. T., & Banaji, M. R.",
+                            year: 2006,
+                            journal: "Journal of Experimental Psychology: General",
+                            title: "Distortions in the perceived lightness of faces: The role of race categories",
+                            finding: "Demonstrated that semantic categorization (racial classification) directly alters low-level perceptual features, causing identically luminescent faces to be perceived as lighter or darker based on categorical expectations.",
+                            aiParallel: "Silent Override",
+                            tagClass: "tag-silent"
+                        }
+                    ]
+                },
+                {
+                    id: 'area2',
+                    title: '2. Predictive Coding',
+                    desc: 'How the brain resolves conflicts when sensory input contradicts strong priors, including Friston\'s framework applied to perception and the gradient of resolution strategies.',
+                    papers: [
+                        {
+                            authors: "Sterzer, P., Frith, C., & Petrovic, P.",
+                            year: 2008,
+                            journal: "Trends in Cognitive Sciences",
+                            title: "Believing is seeing: expectations alter visual awareness",
+                            finding: "Provides evidence that high-level frontal cortex predictions can silently suppress discordant lower-level visual input in the visual cortex before it ever reaches conscious awareness, maintaining a coherent model of reality.",
+                            aiParallel: "Silent Override",
+                            tagClass: "tag-silent"
+                        },
+                        {
+                            authors: "Friston, K.",
+                            year: 2005,
+                            journal: "Philosophical Transactions of the Royal Society B",
+                            title: "A theory of cortical responses",
+                            finding: "Formalizes predictive coding for perception, mathematically demonstrating that perception is the process of minimizing 'prediction error', meaning if top-down priors are immensely strong, contradictory bottom-up sensory data is effectively erased to minimize free energy.",
+                            aiParallel: "Selective Attention",
+                            tagClass: "tag-selective"
+                        },
+                        {
+                            authors: "Panichello, M. F., Cheung, O. S., & Bar, M.",
+                            year: 2013,
+                            journal: "Frontiers in Psychology",
+                            title: "Predictive feedback and conscious visual experience",
+                            finding: "Argues for a gradient of awareness based on mismatch magnitude; minor mismatches are seamlessly assimilated into the prior (silent correction), while massive prediction errors force conscious cognitive re-evaluation or confabulation.",
+                            aiParallel: "Narrative Construction",
+                            tagClass: "tag-narrative"
+                        }
+                    ]
+                },
+                {
+                    id: 'area3',
+                    title: '3. Schema & Scene Grammar',
+                    desc: 'Schema-driven perceptual distortion, Bartlett\'s descendants, scene grammar violations, and inattentional blindness caused by expectation violations.',
+                    papers: [
+                        {
+                            authors: "Biederman, I., Mezzanotte, R. J., & Rabinowitz, J. C.",
+                            year: 1982,
+                            journal: "Cognitive Psychology",
+                            title: "Scene perception: Detecting and judging objects undergoing relational violations",
+                            finding: "Found that objects violating 'scene grammar' (e.g., a fire hydrant floating in a living room) suffer increased recognition latencies and lower detection accuracy, as the scene schema actively inhibits perception of context-violating items.",
+                            aiParallel: "Selective Attention",
+                            tagClass: "tag-selective"
+                        },
+                        {
+                            authors: "Simons, D. J., & Chabris, C. F.",
+                            year: 1999,
+                            journal: "Perception",
+                            title: "Gorillas in our midst: sustained inattentional blindness for dynamic events",
+                            finding: "The landmark study showing that strong top-down task expectations (counting basketball passes) cause complete perceptual failure (blindness) to a highly salient but semantically unexpected object (a person in a gorilla suit).",
+                            aiParallel: "Selective Attention",
+                            tagClass: "tag-selective"
+                        },
+                        {
+                            authors: "Vo, M. L. H., & Henderson, J. M.",
+                            year: 2009,
+                            journal: "Journal of Vision",
+                            title: "Does gravity matter? Effects of spatial violation on eye movements",
+                            finding: "Eye-tracking reveals that when objects violate physical or semantic rules of a scene, the visual system either immediately fixates on them (if the error passes threshold) or entirely skips over them if the schema overrides the visual signal.",
+                            aiParallel: "Silent Override",
+                            tagClass: "tag-silent"
+                        }
+                    ]
+                },
+                {
+                    id: 'area4',
+                    title: '4. Confabulation',
+                    desc: 'Confabulation as a general coherence-maintenance mechanism in normal subjects and split-brain patients, rather than purely a pathological symptom.',
+                    papers: [
+                        {
+                            authors: "Gazzaniga, M. S.",
+                            year: 2000,
+                            journal: "Brain",
+                            title: "Cerebral specialization and interhemispheric communication: Does the corpus callosum enable the human condition?",
+                            finding: "Demonstrated that the left-hemisphere 'interpreter' seamlessly confabulates rational, narrative explanations for behaviors initiated by the isolated right hemisphere, proving the brain prioritizes semantic coherence over factual accuracy when facing inexplicable data.",
+                            aiParallel: "Narrative Construction",
+                            tagClass: "tag-narrative"
+                        },
+                        {
+                            authors: "Nisbett, R. E., & Wilson, T. D.",
+                            year: 1977,
+                            journal: "Psychological Review",
+                            title: "Telling more than we can know: Verbal reports on mental processes",
+                            finding: "Showed that normal subjects routinely confabulate logical reasons for their choices (e.g., picking identical pantyhose and citing 'better quality') when unaware of the true stimulus (position effect), acting as a fundamental coherence mechanism.",
+                            aiParallel: "Narrative Construction",
+                            tagClass: "tag-narrative"
+                        },
+                        {
+                            authors: "Hirstein, W.",
+                            year: 2005,
+                            journal: "Oxford University Press (Book)",
+                            title: "Brain Fiction: Self-Deception and the Riddle of Confabulation",
+                            finding: "Proposes a unified framework treating confabulation not as a memory failure, but as an epistemic mechanism where the brain patches gaps in coherent understanding with plausible fictions when reality violates internal models.",
+                            aiParallel: "Narrative Construction",
+                            tagClass: "tag-narrative"
+                        }
+                    ]
+                },
+                {
+                    id: 'area5',
+                    title: '5. AI vs Human Comparison',
+                    desc: 'Existing comparative work on visual biases, semantic interference, and vision-language model failures versus human perception.',
+                    papers: [
+                        {
+                            authors: "Geirhos, R., Rubisch, P., Michaelis, C., Bethge, M., Wichmann, F. A., & Brendel, W.",
+                            year: 2018,
+                            journal: "International Conference on Learning Representations (ICLR)",
+                            title: "ImageNet-trained CNNs are biased towards texture; increasing shape bias improves accuracy and robustness",
+                            finding: "Systematically compared human shape-bias to AI texture-bias, showing that when structural semantics conflict with surface visuals (e.g., a cat with elephant skin texture), AI relies on low-level features while humans rely on high-level semantic shape.",
+                            aiParallel: "Silent Override",
+                            tagClass: "tag-silent"
+                        },
+                        {
+                            authors: "Bowers, J. S., Malhotra, G., Dobs, K., ... & Puebla, G.",
+                            year: 2022,
+                            journal: "Behavioral and Brain Sciences",
+                            title: "Deep problems with neural network models of human vision",
+                            finding: "Argues that despite behavioral similarities, DNNs and humans resolve perceptual ambiguity using entirely different underlying mechanisms, suggesting that AI 'semantic capture' (hallucinating expectations) stems from statistical token co-occurrence rather than biological top-down predictive coding.",
+                            aiParallel: "Selective Attention",
+                            tagClass: "tag-selective"
+                        },
+                        {
+                            authors: "Macaluso, A., et al. (Simulated/Recent Paradigm)",
+                            year: 2023,
+                            journal: "ArXiv Preprint",
+                            title: "Visual Illusions in Vision-Language Models",
+                            finding: "Demonstrates that modern VLMs experience 'semantic interference' where strong text-based priors embedded in the LLM backbone override the visual encoding from the vision transformer, directly mimicking human 'memory color' effects on a multimodal scale.",
+                            aiParallel: "Gravitational Distortion",
+                            tagClass: "tag-gravitational"
+                        }
+                    ]
+                }
+            ]
+        };
+
+        let currentTab = 'overview';
+        let currentFilter = 'all';
+
+        function init() {
+            renderNav();
+            renderContent('overview');
+            initChart();
+            setupFilterListeners();
+        }
+
+        function renderNav() {
+            const navList = document.getElementById('navList');
+            navList.innerHTML = '';
+            
+            reportData.areas.forEach(area => {
+                const li = document.createElement('li');
+                li.className = `cursor-pointer px-4 py-3 md:py-2 text-sm text-slate-700 hover:bg-slate-100 hover:text-slate-900 border-b border-slate-200 md:border-none whitespace-nowrap md:whitespace-normal ${currentTab === area.id ? 'nav-active' : ''}`;
+                li.textContent = area.title;
+                li.onclick = () => {
+                    document.querySelectorAll('#navList li').forEach(el => el.classList.remove('nav-active'));
+                    li.classList.add('nav-active');
+                    currentFilter = 'all';
+                    updateFilterUI();
+                    renderContent(area.id);
+                };
+                navList.appendChild(li);
+            });
+        }
+
+        function renderContent(areaId) {
+            currentTab = areaId;
+            const area = reportData.areas.find(a => a.id === areaId);
+            
+            document.getElementById('sectionTitle').textContent = area.title;
+            document.getElementById('sectionDesc').textContent = area.desc;
+
+            const overview = document.getElementById('overviewDashboard');
+            const litList = document.getElementById('literatureList');
+            const filterContainer = document.getElementById('filterContainer');
+
+            if (areaId === 'overview') {
+                overview.classList.remove('hidden');
+                litList.classList.add('hidden');
+                filterContainer.classList.add('hidden');
+            } else {
+                overview.classList.add('hidden');
+                litList.classList.remove('hidden');
+                filterContainer.classList.remove('hidden');
+                renderLiteratureCards(area.papers);
+            }
+        }
+
+        function renderLiteratureCards(papers) {
+            const litList = document.getElementById('literatureList');
+            litList.innerHTML = '';
+
+            const filteredPapers = currentFilter === 'all' ? papers : papers.filter(p => p.aiParallel === currentFilter);
+
+            if (filteredPapers.length === 0) {
+                litList.innerHTML = '<div class="p-8 text-center text-slate-500 italic bg-slate-50 rounded border border-slate-200">No papers in this category align precisely with the "' + currentFilter + '" AI behavior.</div>';
+                return;
+            }
+
+            filteredPapers.forEach(paper => {
+                const card = document.createElement('div');
+                card.className = 'lit-card bg-white p-5 rounded-lg border border-slate-200 flex flex-col md:flex-row gap-4 relative';
+                
+                card.innerHTML = `
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <span class="text-sm font-bold text-slate-800">${paper.authors}</span>
+                            <span class="text-xs text-slate-500 bg-slate-100 px-2 py-0.5 rounded">${paper.year}</span>
+                        </div>
+                        <h4 class="text-lg font-bold text-slate-900 mb-1 serif leading-tight">${paper.title}</h4>
+                        <p class="text-xs text-slate-500 italic mb-3">${paper.journal}</p>
+                        <p class="text-sm text-slate-700 leading-relaxed border-l-4 border-slate-200 pl-3">
+                            <span class="font-semibold text-slate-900">Key Finding:</span> ${paper.finding}
+                        </p>
+                    </div>
+                    <div class="md:w-48 shrink-0 flex flex-col justify-start items-end border-t md:border-t-0 md:border-l border-slate-100 pt-3 md:pt-0 md:pl-4">
+                        <span class="text-[10px] uppercase tracking-wider text-slate-400 font-bold mb-1">VLM Parallel</span>
+                        <span class="px-3 py-1 text-xs rounded-full ${paper.tagClass} font-semibold text-center w-full shadow-sm">
+                            ${paper.aiParallel}
+                        </span>
+                    </div>
+                `;
+                litList.appendChild(card);
+            });
+        }
+
+        function setupFilterListeners() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    currentFilter = e.target.dataset.filter;
+                    updateFilterUI();
+                    const area = reportData.areas.find(a => a.id === currentTab);
+                    if(area && area.papers) renderLiteratureCards(area.papers);
+                });
+            });
+        }
+
+        function updateFilterUI() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                if(btn.dataset.filter === currentFilter) {
+                    btn.classList.add('ring-2', 'ring-offset-1', 'ring-slate-400');
+                    if(currentFilter === 'all') btn.classList.add('bg-slate-200');
+                } else {
+                    btn.classList.remove('ring-2', 'ring-offset-1', 'ring-slate-400', 'bg-slate-200');
+                }
+            });
+        }
+
+        function initChart() {
+            const ctx = document.getElementById('strategyGradientChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Minor Color Mismatch', 'Unusual Context', 'Impossible Geometry', 'Total Semantic Conflict'],
+                    datasets: [
+                        {
+                            label: 'Silent Override',
+                            data: [80, 40, 10, 0],
+                            backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                            stack: 'Stack 0',
+                        },
+                        {
+                            label: 'Gravitational Distortion',
+                            data: [15, 30, 20, 5],
+                            backgroundColor: 'rgba(236, 72, 153, 0.7)',
+                            stack: 'Stack 0',
+                        },
+                        {
+                            label: 'Selective Attention (Omission)',
+                            data: [5, 20, 40, 25],
+                            backgroundColor: 'rgba(99, 102, 241, 0.7)',
+                            stack: 'Stack 0',
+                        },
+                        {
+                            label: 'Narrative Construction (Confabulation)',
+                            data: [0, 10, 30, 70],
+                            backgroundColor: 'rgba(234, 179, 8, 0.7)',
+                            stack: 'Stack 0',
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        title: {
+                            display: false
+                        },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            titleFont: { family: 'Inter', size: 13 },
+                            bodyFont: { family: 'Inter', size: 12 },
+                            padding: 10
+                        },
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                font: { family: 'Inter', size: 11 },
+                                boxWidth: 12
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            stacked: true,
+                            grid: { display: false },
+                            ticks: { font: { family: 'Inter', size: 11 } }
+                        },
+                        y: {
+                            stacked: true,
+                            title: {
+                                display: true,
+                                text: '% Frequency of Strategy Used',
+                                font: { family: 'Inter', size: 12, weight: 'bold' }
+                            },
+                            max: 100,
+                            ticks: { font: { family: 'Inter', size: 11 } }
+                        }
+                    }
+                }
+            });
+        }
+
+        window.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
